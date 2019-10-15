@@ -20,10 +20,10 @@ public:
 	// True, если на вершине стека есть меню
 	static bool isActive();
 protected:
-	static char getMenuSelection(const std::string& menu);
+	static char getMenuSelection(const std::string& menu, const std::string &choices);
+	static void clearScreen();
 private:
 	static std::stack<Menu *> menuStack;
-	static std::string parseString(const std::string &menu);
 };
 
 class MainMenu : public Menu{
