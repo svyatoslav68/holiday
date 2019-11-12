@@ -1,6 +1,13 @@
 #ifndef MYSQL_CONNECT_H
 #define MYSQL_CONNECT_H
-bool connect(const char *host, char *name, char *user, char *password);
-bool disconnect(char *name);
+
+#include <mysql.h>
+
+#define USER_BD "slava"
+#define PASSW_BD "677183"
+#define HOST_BD "localhost"
+
+void bd_connect(MYSQL *bd_descriptor, const char *name_bd);
+void disconnect(char *name);
 
 #endif // MYSQL_CONNECT_H

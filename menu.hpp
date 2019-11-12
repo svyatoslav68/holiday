@@ -20,7 +20,7 @@ public:
 	// True, если на вершине стека есть меню
 	static bool isActive();
 protected:
-	static char getMenuSelection(const std::string& menu, const std::string &choices);
+	static int getMenuSelection(const std::string& menu);
 	static void clearScreen();
 private:
 	static std::stack<Menu *> menuStack;
@@ -28,11 +28,15 @@ private:
 
 class MainMenu : public Menu{
 public:
-	MainMenu();
+	MainMenu(Menu *_personMenu, Menu *_graphicMenu);
 	void mainLoop();
 private:
 	void persons();
 	void graphic();
+	void settings();
+	void quit();
+	Menu *personMenu;
+	Menu *graphicMenu;
 };
 
 class PersonMenu : public Menu{
@@ -43,5 +47,14 @@ private:
 	void selectUnit();
 	void manualControl();
 	void orderPerson();
+	void quit();
 };	
+
+class GraphicMenu :public Menu {
+public:
+	GraphicMenu();
+	void mainLoop();
+private:
+	void quit();
+};
 #endif //MENU_HPP

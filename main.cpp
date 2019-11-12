@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <locale>
 extern "C"{
 #include "mysql_connect.h"
 }
@@ -9,9 +10,13 @@ extern "C"{
 using std::string;
 
 int main(int argc, char **argv){
-	string name = "asasd";
-	connect(name.c_str(), "qweqwe", "123123", "dgdfgd");
-	MainMenu mainMenu;
+	setlocale(LC_ALL, "");
+	string name_bd = "unit";
+	MYSQL connection;
+	bd_connect(&connection, name_bd.c_str());
+	PersonMenu pMenu;
+	GraphicMenu gMenu;
+	MainMenu mainMenu(&pMenu, &gMenu);
 	Menu::enterMenu(&mainMenu);
 	while (Menu::isActive())
 		Menu::activeMenu()->mainLoop();
