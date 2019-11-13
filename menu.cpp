@@ -40,12 +40,13 @@ int Menu::getMenuSelection(const string& menu){
 	std::vector<string> list_items;
 	boost::split_regex(list_items, menu, boost::regex(", "));
 	std::vector<string>::const_iterator i = list_items.begin();
-	std::cout << "В меню " << list_items.size() << " пунктов" << std::endl;
+	//std::cout << "В меню " << list_items.size() << " пунктов" << std::endl;
 	//while(i < list_items.end())
 	//	std::cout << *i++ << std::endl;
 	while (std::cin.good()){
 		for (uint8_t i = 0; i < list_items.size(); i++){
-			std::cout << std::dec << "(" << static_cast<int>(i) << ")" << list_items[i] << ",";
+			//std::cout << std::dec << "(" << static_cast<int>(i) << ")" << list_items[i] << ",";
+			std::cout << std::dec << "(" << (static_cast<int>(i)+1)%list_items.size() << ")" << list_items[i] << "," << std::endl;
 		}
 		std::cout << std::endl;
 		//std::cout << menu;
