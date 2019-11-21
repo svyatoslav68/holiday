@@ -9,7 +9,10 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <vector>
+#include <deque>
 #include <boost/algorithm/string/regex.hpp>
+#include "personsDisplayList.hpp"
 #include "menu.hpp"
 
 using std::string; 
@@ -40,24 +43,15 @@ int Menu::getMenuSelection(const string& menu){
 	std::vector<string> list_items;
 	boost::split_regex(list_items, menu, boost::regex(", "));
 	std::vector<string>::const_iterator i = list_items.begin();
-	//std::cout << "В меню " << list_items.size() << " пунктов" << std::endl;
-	//while(i < list_items.end())
-	//	std::cout << *i++ << std::endl;
 	while (std::cin.good()){
 		for (uint8_t i = 0; i < list_items.size(); i++){
-			//std::cout << std::dec << "(" << static_cast<int>(i) << ")" << list_items[i] << ",";
 			std::cout << std::dec << "(" << (static_cast<int>(i)+1)%list_items.size() << ")" << list_items[i] << "," << std::endl;
 		}
 		std::cout << std::endl;
-		//std::cout << menu;
 		int selection = -1;	// В переменную поместим введенный на клавиатуре символ
 		std::cin >> selection;
-		//std::cout << "***************************************" << std::endl;
 		if (std::cin.fail())
 			break;
-		//if (choices.find(std::tolower(selection)) != std::string::npos ||
-		//	choices.find(std::toupper(selection)) != std::string::npos)
-			//return std::toupper(selection);
 		std::cout << "Нажата клавиша: "<< selection << std::endl;
 		if (selection < list_items.size())
 			return selection;
@@ -68,7 +62,7 @@ int Menu::getMenuSelection(const string& menu){
 }
 
 void Menu::clearScreen(){
-	std::cout << "\f\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << std::flush;
+	std::cout << string(100, '\n') << std::flush;
 }
 
 // Определение статической переменной-члена класса
@@ -106,7 +100,7 @@ void MainMenu::quit(){
 	exitMenu();
 }
 
-PersonMenu::PersonMenu(){
+PersonMenu::PersonMenu(Menu *_listPersonsMenu):listPersonsMenu(_listPersonsMenu){
 }
 
 void PersonMenu::mainLoop(){
@@ -126,6 +120,7 @@ void PersonMenu::selectUnit(){
 }
 
 void PersonMenu::manualControl(){
+	Menu::enterMenu(listPersonsMenu);
 }
 
 void PersonMenu::orderPerson(){
@@ -150,6 +145,23 @@ void GraphicMenu::mainLoop(){
 }
 
 void GraphicMenu::quit(){
+	exitMenu();
+}
+
+ListPersonsMenu::ListPersonsMenu(PersonsDisplayList _lPerson):displayList(_lPerson){ } 
+
+void ListPersonsMenu::mainLoop(){
+	clearScreen();
+	static const string menu = "Previous, Next, Quit";
+	switch (getMenuSelection(menu)){
+		case 1:	displayList.pageUp();
+		case 2:	displayList.pageDown();
+		case 0:
+		default: quit();
+	}
+}
+
+void ListPersonsMenu::quit(){
 	exitMenu();
 }
 
