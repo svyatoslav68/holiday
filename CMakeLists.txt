@@ -28,7 +28,7 @@ else()
 	exit()
 endif()
 
-find_package(Boost REQUIRED COMPONENTS regex)
+find_package(Boost REQUIRED COMPONENTS regex program_options)
 
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})

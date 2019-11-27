@@ -41,13 +41,14 @@ private:
 
 class PersonMenu : public Menu{
 public:
-	PersonMenu();
+	PersonMenu(Menu *_listPersonsMenu);
 	void mainLoop();
 private:
 	void selectUnit();
 	void manualControl();
 	void orderPerson();
 	void quit();
+	Menu *listPersonsMenu;
 };	
 
 class GraphicMenu :public Menu {
@@ -57,4 +58,14 @@ public:
 private:
 	void quit();
 };
+
+class ListPersonsMenu:public Menu {
+public:
+	ListPersonsMenu(PersonsDisplayList _lPerson);
+	void mainLoop();
+private:
+	void quit();
+	PersonsDisplayList displayList;
+};
+	
 #endif //MENU_HPP
