@@ -4,7 +4,10 @@
  ***********          displayList.cpp           **************
  ************************************************************/
 #include <iostream>
+<<<<<<< HEAD
 #include <iomanip>
+=======
+>>>>>>> 3df0734f50db4a4f426d8eb5dce4f0eb12a94616
 //#include <deque>
 #include <vector>
 #include <algorithm>
@@ -36,11 +39,14 @@ void DisplayList::display(){
 	std::deque<int>::iterator start = cache.begin() + firstVisibleId; // Итератор указывающий на первую показываемую запись
 	std::deque<int>::iterator finish = start + recsToShow;			// Итератор указывающий на послденюю показываемую запись
 	for (std::deque<int>::iterator i = start; i != finish; i++){
+<<<<<<< HEAD
 		// Показ номера строк
 		int linenum = i - start + 1;
 		std::cout << std::setw(2) << std::setfill(' ') << std::right << std::dec << linenum << ":";
 		displayRecord(*i);
 		std::cout << std::endl;
+=======
+>>>>>>> 3df0734f50db4a4f426d8eb5dce4f0eb12a94616
 	}
 	if (atEnd()) // Сообщение о конце списка
 		std::cout << "============ Конец списка ==============" << std::endl;

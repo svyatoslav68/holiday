@@ -1,13 +1,20 @@
+<<<<<<< HEAD
 #include <iostream>
 #include <string>
 #include <vector>
 #include "listPersons.hpp"
 #include <boost/lexical_cast.hpp>
+=======
+#include <string>
+#include <vector>
+#include "listPersons.hpp"
+>>>>>>> 3df0734f50db4a4f426d8eb5dce4f0eb12a94616
 
 using std::string; 
 TPerson::TPerson(){
 }
 
+<<<<<<< HEAD
 TPerson::TPerson(int id, string _family, string _name, string _parent){
 	dataId = id;
 	family = _family;
@@ -58,6 +65,15 @@ ListPersons::ListPersons(){
 }
 
 ListPersons::~ListPersons(){
+=======
+void TPerson::load(){
+}
+
+void TPerson::save(){
+}
+
+ListPersons::ListPersons(){
+>>>>>>> 3df0734f50db4a4f426d8eb5dce4f0eb12a94616
 
 }
 
