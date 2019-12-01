@@ -21,7 +21,7 @@ DisplayList::~DisplayList(){
 
 void DisplayList::display(){
 	// Заполнение буфера первым экранным списком
-	fillCachedBkwd(firstVisibleId, number_strings);
+	fillCachedFwd(firstVisibleId, number_strings);
 	// Если буфер пустой, то нечего показывать
 	if (cache.empty()){
 		std::cout << "============== Нет записей для показа ===========" << std::endl;
@@ -49,11 +49,16 @@ void DisplayList::display(){
 void DisplayList::pageUp(){
 	if (atStart())
 		return;
+	fillCachedBkwd(firstVisibleId, number_strings);
+	firstVisibleId = std::max(firstVisibleId - number_strings, 0);
 }
 
 void DisplayList::pageDown(){
 	if (atEnd())
 		return;
+	fillCachedFwd(firstVisibleId, 2*number_strings);
+	if(!atEnd())
+		firstVisibleId+=number_strings;
 }
 
 void DisplayList::toStart(){

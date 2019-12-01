@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "listPersons.hpp"
 #include "personsDisplayList.hpp"
 
@@ -14,7 +15,8 @@ void PersonsDisplayList::listAll(){
 }
 
 void PersonsDisplayList::displayRecord(int recordId){
-
+	ListPersons::const_iterator it = listPersons.findRecordId(recordId);
+	std::cout << it->getId() << ". " << it->getFamilyIO();
 }
 
 bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int> &result){
@@ -32,6 +34,24 @@ bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int>
 		return true;
 	}
 	ListPersons::const_iterator iter;	// Итератор по содержимому списка
+	if (startId == 0)
+		iter = (forwards ? listPersons.begin() : listPersons.end());
+	else {
+		iter = listPersons.findRecordId(startId);
+		if (forwards)
+			++iter;
+	}
+	if (forwards) {
+		while (iter != listPersons.end() && numRecords-- >0)
+			result.push_back((iter++)->getId());
+		return iter == listPersons.end();
+	}
+	else {
+		while (iter != listPersons.begin() && numRecords-- >0)
+			result.push_back((--iter)->getId());
+		std::reverse(result.begin(), result.end());
+		return iter == listPersons.begin();
+	}
 
 	return true;
 }

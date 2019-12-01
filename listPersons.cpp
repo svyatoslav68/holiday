@@ -15,6 +15,9 @@ TPerson::TPerson(int id, string _family, string _name, string _parent){
 	parent = _parent;
 }
 
+string TPerson::getFamilyIO() const{
+	return family + " " + name;
+}
 
 void ListPersons::load(){
 	int mysql_status = 0;
@@ -27,13 +30,12 @@ void ListPersons::load(){
 	MYSQL_ROW row;
 	int num_fields = mysql_num_fields(result);
 	while ((row = mysql_fetch_row(result))){
-		for(int i = 0; i < num_fields; i++){
-			content.push_back(TPerson(boost::lexical_cast<int>(row[0]), row[1], row[2], row[3]));
+		content.push_back(TPerson(boost::lexical_cast<int>(row[0]), row[1], row[2], row[3]));
+		/*for(int i = 0; i < num_fields; i++){
 			//std::cout << row[i] << " : ";
-		}
+		}*/
 		//std::cout << std::endl;
 	}
-
 }
 
 ListPersons::iterator ListPersons::getById(int recordId){

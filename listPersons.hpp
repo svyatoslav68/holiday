@@ -15,6 +15,7 @@ public:
 	TPerson();
 	TPerson(int id, string _family, string _name, string _parent);
 	int getId() const {return dataId;}
+	string getFamilyIO() const;
 };
 
 class ListPersons {

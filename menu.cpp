@@ -13,6 +13,7 @@
 #include <deque>
 #include <boost/algorithm/string/regex.hpp>
 #include "personsDisplayList.hpp"
+#include "listPersons.hpp"
 #include "menu.hpp"
 
 using std::string; 
@@ -148,14 +149,15 @@ void GraphicMenu::quit(){
 	exitMenu();
 }
 
-ListPersonsMenu::ListPersonsMenu(PersonsDisplayList _lPerson):displayList(_lPerson){ } 
+ListPersonsMenu::ListPersonsMenu(ListPersons &_listPersons):listPersons(_listPersons),displayList(_listPersons){ } 
 
 void ListPersonsMenu::mainLoop(){
 	clearScreen();
+	displayList.display();
 	static const string menu = "Previous, Next, Quit";
 	switch (getMenuSelection(menu)){
-		case 1:	displayList.pageUp();
-		case 2:	displayList.pageDown();
+		case 1:	displayList.pageUp();break;
+		case 2:	displayList.pageDown();break;
 		case 0:
 		default: quit();
 	}

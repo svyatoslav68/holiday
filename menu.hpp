@@ -61,10 +61,11 @@ private:
 
 class ListPersonsMenu:public Menu {
 public:
-	ListPersonsMenu(PersonsDisplayList _lPerson);
+	ListPersonsMenu(ListPersons &_listPersons);
 	void mainLoop();
 private:
 	void quit();
+	ListPersons &listPersons;
 	PersonsDisplayList displayList;
 };
 	
