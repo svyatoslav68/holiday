@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <algorithm>
 #include "listPersons.hpp"
@@ -16,7 +17,8 @@ void PersonsDisplayList::listAll(){
 
 void PersonsDisplayList::displayRecord(int recordId){
 	ListPersons::const_iterator it = listPersons.findRecordId(recordId);
-	std::cout << it->getId() << ". " << it->getFamilyIO();
+	std::cout << std::setw(5) << std::setfill(' ') <<  std::right << std::dec << it->getId() << ". ";
+	std::cout << it->getFamilyIO();
 }
 
 bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int> &result){
