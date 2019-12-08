@@ -21,6 +21,7 @@ public:
 	static bool isActive();
 protected:
 	static int getMenuSelection(const std::string& menu);
+	static uint8_t getMenuSelection(const std::string& menu, const string& choices);
 	static void clearScreen();
 private:
 	static std::stack<Menu *> menuStack;
@@ -64,6 +65,7 @@ public:
 	ListPersonsMenu(ListPersons &_listPersons);
 	void mainLoop();
 private:
+	void selectPerson(uint8_t number);
 	void quit();
 	ListPersons &listPersons;
 	PersonsDisplayList displayList;

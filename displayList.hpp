@@ -14,7 +14,7 @@ class DisplayList {
 	private:
 		typedef std::deque<int> cache_t;   // Тип двусторонней очереди целых. Тип кэша записей.
 		cache_t cache;
-		const uint8_t number_strings; // Количество строк экрана
+		//const uint8_t number_strings; // Количество строк экрана
 		bool cachedFirst;	// True, если буфер содержит первую запись списка
 		bool cachedLast;	// True, если буфер содержит последнюю запись списка
 		int firstVisibleId;	//Идентификатор первой видимой записи
@@ -33,7 +33,9 @@ class DisplayList {
 			std::vector<int>& result // возвращаемые записи
 			) = 0;
 	public:
-		DisplayList(const uint8_t n_strings = 15);
+		static const int number_strings = 15;
+		//DisplayList(const uint8_t n_strings = 15);
+		DisplayList();//const uint8_t n_strings = 15);
 		//DisplayList
 		virtual ~DisplayList();
 		void display();

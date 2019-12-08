@@ -11,7 +11,7 @@
 #include <iterator>
 #include "displayList.hpp"
 
-DisplayList::DisplayList(const uint8_t n_strings):number_strings(n_strings){
+DisplayList::DisplayList(){//const uint8_t n_strings):number_strings(n_strings){
 	reset();
 }
 
@@ -33,6 +33,8 @@ void DisplayList::display(){
 		std::min((int)number_strings, int(cache.size() - firstVisibleId));
 	if (atStart()) // Сообщение о начале списка
 		std::cout << "============ Начало списка ==============" << std::endl;
+	else 
+		std::cout << "-----------------------------------------" << std::endl;
 	std::deque<int>::iterator start = cache.begin() + firstVisibleId; // Итератор указывающий на первую показываемую запись
 	std::deque<int>::iterator finish = start + recsToShow;			// Итератор указывающий на послденюю показываемую запись
 	for (std::deque<int>::iterator i = start; i != finish; i++){
@@ -44,6 +46,8 @@ void DisplayList::display(){
 	}
 	if (atEnd()) // Сообщение о конце списка
 		std::cout << "============ Конец списка ==============" << std::endl;
+	else 
+		std::cout << "-----------------------------------------" << std::endl;
 }
 
 void DisplayList::pageUp(){
