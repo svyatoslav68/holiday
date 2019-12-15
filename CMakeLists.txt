@@ -1,24 +1,30 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(holiday VERSION 0.0.1)
+project(holiday VERSION 0.2.1)
 
 set(TARGET holiday)
+set(SOURCE_DIR src)
+configure_file(
+	${CMAKE_HOME_DIRECTORY}/version.hpp.in
+	${CMAKE_CURRENT_BINARY_DIR}/version.hpp
+)
 
 file(GLOB SOURCES_CXX
-	*.cpp)
+	${SOURCE_DIR}/*.cpp)
 
 file(GLOB SOURCES_C
-	*.c)
+	${SOURCE_DIR}/*.c)
 
 set(HEADERS
-	menu.hpp)
+	${SOURCE_DIR}/menu.hpp)
 
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 1)
+#set(VERSION_MAJOR 0)
+#set(VERSION_MINOR 1)
 
 # Поиск необходимых для сборок библиотек и заголовочных файлов
 
-list(APPEND CMAKE_MODULE_PATH /home/slava/Net_Projects/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_HOME_DIRECTORY}/cmake_modules)
+
 message("CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
 find_package(MariaDBClient REQUIRED)
 if(MariaDBClient_FOUND)
@@ -30,18 +36,19 @@ endif()
 
 find_package(Boost REQUIRED COMPONENTS regex program_options)
 
+add_executable(${TARGET} ${SOURCES_CXX} ) #Собрать файл calendar из файла main.cpp
+target_link_libraries(${TARGET} ${MariaDBClient_LIBRARY})
+target_link_libraries(${TARGET} ${Boost_LIBRARIES})
+target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 if(Boost_FOUND)
-	include_directories(${Boost_INCLUDE_DIRS})
+	target_include_directories(${TARGET} PUBLIC ${Boost_INCLUDE_DIRS})
 else()
 	message("Не получится собрать приложение\n, не найден Boost")
 endif()
 
-add_executable(${TARGET} ${SOURCES_CXX} ) #Собрать файл calendar из файла main.cpp
-target_link_libraries(${TARGET} ${MariaDBClient_LIBRARY})
-target_link_libraries(${TARGET} ${Boost_LIBRARIES})
-
 message("Собирается проект ${PROJECT_NAME}")
-message("Версия № ${VERSION_MAJOR}.${VERSION_MINOR}")
+message("Версия № ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
+
 if (SOURCES_C)
 	message("Найдены файлы для C")
 	message("SOURCES_C = ${SOURCES_C}")
