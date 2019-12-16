@@ -9,11 +9,22 @@ extern "C"{
 #include "personsDisplayList.hpp"
 #include "menu.hpp"
 #include "listPersons.hpp"
+#include "cl_parametrs.hpp"
+#include "version.hpp"
 
 using std::string;
 
+string getVersion(){
+	return string(g_version);
+}
+
 int main(int argc, char **argv){
 	setlocale(LC_ALL, "");
+	clParametrs appParametrs(argc, argv);
+	if (appParametrs.isVersion()){
+		std::cout << "Version of app: " << getVersion() << std::endl; 
+		exit(0);
+	}
 	ListPersons lstPersons;
 	lstPersons.load();
 	ListPersonsMenu lMenu(lstPersons);
