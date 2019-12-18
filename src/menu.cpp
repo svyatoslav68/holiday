@@ -96,7 +96,7 @@ uint8_t Menu::getMenuSelection(const string& menu, const string& choices){
 				digit_str += *ch_it;
 			}
 			if (choices.find(std::toupper(*ch_it)) != string::npos || 
-				choices.find(std::tolower(*ch_it)) !=        string::npos)
+				choices.find(std::tolower(*ch_it)) != string::npos)
 				return std::toupper(*ch_it);
 			else
 				std::cout << "Выберите пункт меню еще раз" << std::endl;
