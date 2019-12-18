@@ -42,12 +42,14 @@ ListPersons::iterator ListPersons::getById(int recordId){
 	for (ListPersons::iterator iter = content.begin(); iter != content.end(); iter++)
 		if (iter->getId() == recordId)
 			return iter;
+	return content.end();
 }
 
 ListPersons::const_iterator ListPersons::getById(int recordId) const {
 	for (ListPersons::const_iterator iter = content.begin(); iter != content.end(); iter++)
 		if (iter->getId() == recordId)
 			return iter;
+	return content.end();
 }
 
 ListPersons::const_iterator ListPersons::findRecordId(int recordId){

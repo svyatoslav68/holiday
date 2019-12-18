@@ -27,7 +27,8 @@ int main(int argc, char **argv){
 	}
 	ListPersons lstPersons;
 	lstPersons.load();
-	ListPersonsMenu lMenu(lstPersons);
+	ProcessingPersonMenu ppMenu;
+	ListPersonsMenu lMenu(lstPersons, &ppMenu);
 	PersonMenu pMenu(&lMenu);
 	GraphicMenu gMenu;
 	MainMenu mainMenu(&pMenu, &gMenu);

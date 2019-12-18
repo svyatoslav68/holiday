@@ -12,6 +12,7 @@
 #include <vector>
 #include <deque>
 #include <boost/algorithm/string/regex.hpp>
+#include <boost/lexical_cast.hpp>
 #include "personsDisplayList.hpp"
 #include "listPersons.hpp"
 #include "menu.hpp"
@@ -66,6 +67,7 @@ int Menu::getMenuSelection(const string& menu){
 }
 
 uint8_t Menu::getMenuSelection(const string& menu, const string& choices){
+	//string buf_for_digit("");	// Переменная для хранения строки, которая будет преобразована в число
 	std::vector<string> list_items;
 	boost::split_regex(list_items, menu, boost::regex(", "));
 	std::vector<string>::const_iterator i = list_items.begin();
@@ -76,18 +78,32 @@ uint8_t Menu::getMenuSelection(const string& menu, const string& choices){
 				std::cout << ",";
 			std::cout << std::endl;
 		}
-		uint8_t selection = -1;	// В переменную поместим введенный на клавиатуре символ
-		std::cin >> selection;
+		/*uint8_t selection = -1;	// В переменную поместим введенный на клавиатуре символ
+		std::cin >> selection;*/
+		string input_str("");
+		string digit_str("");
+		bool str_is_digit = false;
+		std::cin >> input_str;
 		if (std::cin.fail())
 			break;
-		std::cout << "Нажата клавиша: "<< selection << std::endl;
+		std::cout << "Введена строка: "<< input_str << std::endl;
 		//if (selection < list_items.size())
-		//if (selection
-		if (choices.find(std::toupper(selection)) != string::npos || 
-			choices.find(std::tolower(selection)) !=        string::npos)
-			return std::toupper(selection);
-		else
-			std::cout << "Выберите пункт меню еще раз" << std::endl;
+		string::const_iterator ch_it = input_str.begin();
+		while (ch_it < input_str.end()){
+			if (std::isdigit(*ch_it)){
+				str_is_digit = true;
+				std::cout << "Нажата клавиша цифры: "  << *ch_it << std::endl;
+				digit_str += *ch_it;
+			}
+			if (choices.find(std::toupper(*ch_it)) != string::npos || 
+				choices.find(std::tolower(*ch_it)) !=        string::npos)
+				return std::toupper(*ch_it);
+			else
+				std::cout << "Выберите пункт меню еще раз" << std::endl;
+			ch_it++;
+		}
+		if (str_is_digit)
+			return boost::lexical_cast<int>(digit_str);
 	}
 	return 0;
 }
@@ -111,8 +127,8 @@ void MainMenu::mainLoop(){
 		case 'P':persons();		break;
 		case 'G':graphic();		break;
 		case 'S':settings();	break;
-		case 'Q':
-		default: quit();
+		case 'Q':	quit(); break;
+		default:;
 	}
 }
 
@@ -144,8 +160,8 @@ void PersonMenu::mainLoop(){
 	case 'S': selectUnit();		break;
 	case 'M': manualControl();	break;
 	case 'O': orderPerson();	break;
-	case 'Q':
-	default:	quit();
+	case 'Q':	quit(); break;
+	default:;
 	}
 }
 
@@ -173,8 +189,8 @@ void GraphicMenu::mainLoop(){
 	static const string menu = "Input, View, Manual, Auto, Quit?";
 	static const string choices = "IVMAQ";
 	switch (getMenuSelection(menu, choices)){
-	case 'Q':
-	default:	quit();
+	case 'Q':	quit(); break;
+	default:;
 	}
 }
 
@@ -182,7 +198,7 @@ void GraphicMenu::quit(){
 	exitMenu();
 }
 
-ListPersonsMenu::ListPersonsMenu(ListPersons &_listPersons):listPersons(_listPersons),displayList(_listPersons){ } 
+ListPersonsMenu::ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu *_pMenu):listPersons(_listPersons),displayList(_listPersons), personMenu(_pMenu){ } 
 
 void ListPersonsMenu::mainLoop(){
 	clearScreen();
@@ -191,23 +207,43 @@ void ListPersonsMenu::mainLoop(){
 	static const string choices = "PNQ";
 	uint8_t result = getMenuSelection(menu, choices);
 	if ((result > 0) and (result <= displayList.number_strings)){
+		//std::cout << "Select digit " << static_cast<int>(result) << std::endl;
 		selectPerson(result);
-		return;
 	}
 	switch (result){
 		case 'P':	displayList.pageUp();break;
 		case 'N':	displayList.pageDown();break;
-		case 'Q':
-		default: quit();
+		case 'Q':	quit(); break;
+		default: ;
 	}
 }
 
 void ListPersonsMenu::selectPerson(uint8_t number){
-	clearScreen();
-	std::cout << "Выбран сотрудник № " << number << std::endl;
+	personMenu->setIdPerson(static_cast<int>(number));
+	Menu::enterMenu(personMenu);
 }
 
 void ListPersonsMenu::quit(){
+	exitMenu();
+}
+
+void ProcessingPersonMenu::mainLoop(){
+	static const string menu = "Quit";
+	static const string choices = "Q";
+	clearScreen();
+	std::cout << "Выбран сотрудник № " << idPerson << std::endl;
+	uint8_t result = getMenuSelection(menu, choices);
+	switch (result){
+		case 'Q':	quit(); break;
+		default: ;
+	}
+}
+
+void ProcessingPersonMenu::setIdPerson(int id){
+	idPerson = id;
+}
+
+void ProcessingPersonMenu::quit(){
 	exitMenu();
 }
 

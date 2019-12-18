@@ -60,15 +60,26 @@ private:
 	void quit();
 };
 
+
+class ProcessingPersonMenu:public Menu{
+public:
+	ProcessingPersonMenu(){idPerson = -1;};
+	void mainLoop();
+	void setIdPerson(int id);
+private:
+	int idPerson;
+	void quit();
+};
+
 class ListPersonsMenu:public Menu {
 public:
-	ListPersonsMenu(ListPersons &_listPersons);
+	ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu *_pMenu);
 	void mainLoop();
 private:
 	void selectPerson(uint8_t number);
 	void quit();
 	ListPersons &listPersons;
 	PersonsDisplayList displayList;
+	ProcessingPersonMenu *personMenu;
 };
-	
 #endif //MENU_HPP
