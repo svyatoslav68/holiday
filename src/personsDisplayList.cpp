@@ -4,6 +4,10 @@
 #include <algorithm>
 #include "listPersons.hpp"
 #include "personsDisplayList.hpp"
+extern "C"{
+#include <mysql.h>
+}
+#include <cstring>
 
 /*personsDisplayList::personsDisplayList(){
 	listPersons = 
@@ -20,6 +24,7 @@ void PersonsDisplayList::displayRecord(int recordId){
 	std::cout << std::setw(5) << std::setfill(' ') <<  std::right << std::dec << it->getId() << ". ";
 	std::cout << it->getFamilyIO();
 }
+
 
 bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int> &result){
 	result.clear();

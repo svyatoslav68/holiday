@@ -19,14 +19,24 @@ string TPerson::getFamilyIO() const{
 	return family + " " + name;
 }
 
+void TPerson::displayCard(){
+	//ListPersons::const_iterator it = listPersons.findRecordId(recordId);
+	//MYSQL descriptorBD = listPersons.getDescriptorBD();
+	char cardPersonSQL[strlen(templateCardPersonSQL)+10];
+	sprintf(cardPersonSQL, templateCardPersonSQL, getId());
+	std::cout << "SQL =" << cardPersonSQL << std::endl;
+}
+
+const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, parent, person_no, sex, birthday, placeborn, payposition, kodunit, field_duty, dopusk, inn, file_image, GET_CURRENT_ACTION(idPerson, 1, 0) as rank_person, GET_CURRENT_ACTION(idPerson, 2, 0) as position_person, GET_CURRENT_ACTION(idPerson, 3, 0) as class_person, GET_FULL_NAME_UNIT_LEVEL(kodunit, -1, 'i') as name_unit FROM main WHERE idPerson = %s";
+
 void ListPersons::load(){
 	int mysql_status = 0;
 	string SQL = "SELECT idPerson, family, name, parent FROM main";
-	mysql_status = mysql_query(&descriptorBD, SQL.c_str());
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
 	if (mysql_status){
 		std::cout << "Ошибка при выполнении запроса" << std::endl;
 	}
-	MYSQL_RES *result = mysql_store_result(&descriptorBD);
+	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
 	MYSQL_ROW row;
 	int num_fields = mysql_num_fields(result);
 	while ((row = mysql_fetch_row(result))){
@@ -57,9 +67,8 @@ ListPersons::const_iterator ListPersons::findRecordId(int recordId){
 }
 
 ListPersons::ListPersons(){
-	string name_bd = "unit";
-	bd_connect(&descriptorBD, name_bd.c_str());
 }
+
 
 ListPersons::~ListPersons(){
 

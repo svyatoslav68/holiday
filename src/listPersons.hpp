@@ -1,10 +1,10 @@
 #ifndef LISTPERSONS_HPP
 #define LISTPERSONS_HPP
-extern "C"{
-#include "mysql_connect.h"
-}
+#include "cl_parametrs.hpp"
+
 using std::string; 
 
+extern clParametrs appParametrs;
 class TPerson {
 private:
 	int dataId;		// Идентификатор записи о сотруднике в БД
@@ -12,9 +12,11 @@ private:
 	string name;
 	string parent;
 public:
+	static const char *templateCardPersonSQL;
 	TPerson();
 	TPerson(int id, string _family, string _name, string _parent);
 	int getId() const {return dataId;}
+	void displayCard();
 	string getFamilyIO() const;
 };
 
@@ -32,7 +34,6 @@ public:
 	const_iterator findRecordId(int recordId);
 private:
 	tcontent content;
-	MYSQL descriptorBD;
 	iterator getById(int recordId);
 	const_iterator getById(int recordId) const;
 };

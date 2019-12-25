@@ -14,13 +14,14 @@ extern "C"{
 
 using std::string;
 
+clParametrs appParametrs(argc, argv); // Параметры приложения - глобальная переменная
+
 string getVersion(){
 	return string(g_version);
 }
 
 int main(int argc, char **argv){
 	setlocale(LC_ALL, "");
-	clParametrs appParametrs(argc, argv);
 	if (appParametrs.isVersion()){
 		std::cout << "Version of app: " << getVersion() << std::endl; 
 		exit(0);

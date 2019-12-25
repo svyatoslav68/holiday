@@ -18,6 +18,7 @@ clParametrs::clParametrs(int argc, char *argv[]){
 		std::cout << "Помощь по программе:" << std::endl;
 		std::cout << ops_desc << std::endl;
 	}
+	bd_connect(&descriptorBD, name_bd);
 }
 
 bool clParametrs::isHelp(){
@@ -26,4 +27,10 @@ bool clParametrs::isHelp(){
 
 bool clParametrs::isVersion(){
 	return op_store.count("version");
+}
+
+MYSQL *clParametrs::getDescriptorBD(){
+/*Нужно перед возвращение дескриптора проверить, указывает ли он 
+на реально подключенную базу данных. Если нет, то выдавать исключение.*/
+	return &descriptorBD;
 }
