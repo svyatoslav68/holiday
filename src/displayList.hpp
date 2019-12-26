@@ -41,6 +41,9 @@ class DisplayList {
 		DisplayList();//const uint8_t n_strings = 15);
 		//DisplayList
 		virtual ~DisplayList();
+		/* Функция возвращает идентификатор записи по номеру строки записи в 
+		 * отображаемой странице */
+		int getIdRecord(int number);
 		void display();
 		void pageUp();
 		void pageDown();

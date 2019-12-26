@@ -36,7 +36,7 @@ void DisplayList::display(){
 	else 
 		std::cout << "-----------------------------------------" << std::endl;
 	std::deque<int>::iterator start = cache.begin() + firstVisibleId; // Итератор указывающий на первую показываемую запись
-	std::deque<int>::iterator finish = start + recsToShow;			// Итератор указывающий на послденюю показываемую запись
+	std::deque<int>::iterator finish = start + recsToShow;			// Итератор указывающий на последнюю показываемую запись
 	for (std::deque<int>::iterator i = start; i != finish; i++){
 		// Показ номера строк
 		int linenum = i - start + 1;
@@ -55,6 +55,12 @@ void DisplayList::pageUp(){
 		return;
 	fillCachedBkwd(firstVisibleId, number_strings);
 	firstVisibleId = std::max(firstVisibleId - number_strings, 0);
+}
+
+int DisplayList::getIdRecord(int number){
+	// Итератор указывающий на number-ную запись в кэше
+	std::deque<int>::const_iterator it = cache.begin()+firstVisibleId+number - 1;
+	return *it;
 }
 
 void DisplayList::pageDown(){

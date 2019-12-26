@@ -219,7 +219,7 @@ void ListPersonsMenu::mainLoop(){
 }
 
 void ListPersonsMenu::selectPerson(uint8_t number){
-	personMenu->setIdPerson(static_cast<int>(number));
+	personMenu->setIdPerson(displayList.getIdRecord(static_cast<int>(number)));
 	Menu::enterMenu(personMenu);
 }
 
@@ -231,7 +231,7 @@ void ProcessingPersonMenu::mainLoop(){
 	static const string menu = "Quit";
 	static const string choices = "Q";
 	clearScreen();
-	std::cout << "Выбран сотрудник № " << idPerson << std::endl;
+	std::cout << "Выбран сотрудник с идентификатором " << idPerson << std::endl;
 	uint8_t result = getMenuSelection(menu, choices);
 	switch (result){
 		case 'Q':	quit(); break;

@@ -16,6 +16,7 @@ public:
 	void listAll();
 protected:
 	virtual void displayRecord(int recordId);
+	//virtual void displayCard(int record_id);
 	virtual bool fetchMore(int startId, int numRecords, std::vector<int> &result);
 private:
 	ListPersons &listPersons;

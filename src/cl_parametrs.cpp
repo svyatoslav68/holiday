@@ -7,6 +7,14 @@
 #include <iostream>
 #include "cl_parametrs.hpp"
 
+clParametrs::clParametrs(){
+	ops_desc.add_options()
+		("help,h", "Show help")
+		("version,v", "Show version of application")
+	;
+	bd_connect(&descriptorBD, name_bd);
+}
+
 clParametrs::clParametrs(int argc, char *argv[]){
 	ops_desc.add_options()
 		("help,h", "Show help")
@@ -19,6 +27,15 @@ clParametrs::clParametrs(int argc, char *argv[]){
 		std::cout << ops_desc << std::endl;
 	}
 	bd_connect(&descriptorBD, name_bd);
+}
+
+void clParametrs::setArgs(int argc, char *argv[]){
+	po::store(po::command_line_parser(argc, argv).options(ops_desc).positional(pos_desc).run(), op_store);
+	po::notify(op_store);
+	if(op_store.count("help")){
+		std::cout << "Помощь по программе:" << std::endl;
+		std::cout << ops_desc << std::endl;
+	}
 }
 
 bool clParametrs::isHelp(){

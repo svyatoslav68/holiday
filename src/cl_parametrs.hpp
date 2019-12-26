@@ -16,7 +16,9 @@ namespace po = boost::program_options;
 class clParametrs{
 public:
 	const char *name_bd = "unit";
+	clParametrs();
 	clParametrs(int argc, char *argv[]);
+	void setArgs(int argc, char *argv[]);
 	bool isHelp();
 	bool isVersion();
 	MYSQL *getDescriptorBD();
