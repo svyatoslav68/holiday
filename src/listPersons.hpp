@@ -14,6 +14,7 @@ private:
 public:
 	static const char *templateCardPersonSQL;
 	TPerson();
+	TPerson(int id);
 	TPerson(int id, string _family, string _name, string _parent);
 	int getId() const {return dataId;}
 	void displayCard();

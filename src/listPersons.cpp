@@ -8,6 +8,21 @@ using std::string;
 TPerson::TPerson(){
 }
 
+TPerson::TPerson(int id){
+	dataId = id;
+	std::stringstream ss;
+	ss << templateCardPersonSQL << id;
+	string SQL;
+	SQL = ss.str();
+	std::cout << "Выполняется запрос :" << SQL << std::endl;
+	int mysql_status = 0;
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
+	if (mysql_status){
+		std::cout << "Ошибка при выполнении запроса: " << SQL << std::endl;
+	}
+	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
+}
+
 TPerson::TPerson(int id, string _family, string _name, string _parent){
 	dataId = id;
 	family = _family;
@@ -27,7 +42,7 @@ void TPerson::displayCard(){
 	std::cout << "SQL =" << cardPersonSQL << std::endl;
 }
 
-const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, parent, person_no, sex, birthday, placeborn, payposition, kodunit, field_duty, dopusk, inn, file_image, GET_CURRENT_ACTION(idPerson, 1, 0) as rank_person, GET_CURRENT_ACTION(idPerson, 2, 0) as position_person, GET_CURRENT_ACTION(idPerson, 3, 0) as class_person, GET_FULL_NAME_UNIT_LEVEL(kodunit, -1, 'i') as name_unit FROM main WHERE idPerson = %s";
+const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, parent, person_no, sex, birthday, placeborn, payposition, kodunit, field_duty, dopusk, inn, file_image, GET_CURRENT_ACTION(idPerson, 1, 0) as rank_person, GET_CURRENT_ACTION(idPerson, 2, 0) as position_person, GET_CURRENT_ACTION(idPerson, 3, 0) as class_person, GET_FULL_NAME_UNIT_LEVEL(kodunit, -1, 'i') as name_unit FROM main WHERE idPerson = ";
 
 void ListPersons::load(){
 	int mysql_status = 0;

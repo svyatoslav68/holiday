@@ -232,6 +232,7 @@ void ProcessingPersonMenu::mainLoop(){
 	static const string choices = "Q";
 	clearScreen();
 	std::cout << "Выбран сотрудник с идентификатором " << idPerson << std::endl;
+	TPerson myPerson(idPerson);
 	uint8_t result = getMenuSelection(menu, choices);
 	switch (result){
 		case 'Q':	quit(); break;

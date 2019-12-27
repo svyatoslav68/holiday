@@ -25,7 +25,6 @@ void PersonsDisplayList::displayRecord(int recordId){
 	std::cout << it->getFamilyIO();
 }
 
-
 bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int> &result){
 	result.clear();
 	if (numRecords == 0) 
@@ -59,8 +58,6 @@ bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int>
 		std::reverse(result.begin(), result.end());
 		return iter == listPersons.begin();
 	}
-
 	return true;
 }
-
 
