@@ -5,15 +5,18 @@
 using std::string; 
 
 extern clParametrs appParametrs;
+
 class TPerson {
 private:
 	int dataId;		// Идентификатор записи о сотруднике в БД
 	string family;
 	string name;
 	string parent;
+	MYSQL_RES *data_from_BD;
 public:
 	static const char *templateCardPersonSQL;
 	TPerson();
+	TPerson(const TPerson &p);
 	TPerson(int id);
 	TPerson(int id, string _family, string _name, string _parent);
 	int getId() const {return dataId;}

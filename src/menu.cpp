@@ -233,6 +233,7 @@ void ProcessingPersonMenu::mainLoop(){
 	clearScreen();
 	std::cout << "Выбран сотрудник с идентификатором " << idPerson << std::endl;
 	TPerson myPerson(idPerson);
+	myPerson.displayCard();
 	uint8_t result = getMenuSelection(menu, choices);
 	switch (result){
 		case 'Q':	quit(); break;

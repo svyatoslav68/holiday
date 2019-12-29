@@ -1,7 +1,0 @@
-#ifndef _PATH_H
-#define _PATH_H
-
-const char *g_source_path = "@PROJECT_SOURCE_DIR@";
-const char *g_binary_path = "@PROJECT_BINARY_DIR@";
-
-#endif // _PATH_H

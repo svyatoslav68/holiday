@@ -6,9 +6,22 @@
 
 using std::string; 
 TPerson::TPerson(){
+	data_from_BD = 0;
+}
+
+TPerson::TPerson(const TPerson &p){
+	dataId = p.dataId;
+	family = p.family;
+	name = p.name;
+	parent = p.parent;
+	if (p.data_from_BD){
+		data_from_BD = new MYSQL_RES();
+		//*data_from_BD = *(p.data_from_BD);
+	}
 }
 
 TPerson::TPerson(int id){
+	data_from_BD = 0;
 	dataId = id;
 	std::stringstream ss;
 	ss << templateCardPersonSQL << id;
@@ -20,10 +33,14 @@ TPerson::TPerson(int id){
 	if (mysql_status){
 		std::cout << "Ошибка при выполнении запроса: " << SQL << std::endl;
 	}
-	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
+	data_from_BD = mysql_store_result(appParametrs.getDescriptorBD());
+	//int num_fields = mysql_num_fields(data_from_BD);
+	//if (!num_fields == 1)
+	//	std::cout << "Что-то не так. Запрос " << SQL << " вернул не одну запись" << std::endl;
 }
 
 TPerson::TPerson(int id, string _family, string _name, string _parent){
+	data_from_BD = nullptr;
 	dataId = id;
 	family = _family;
 	name = _name;
@@ -40,6 +57,11 @@ void TPerson::displayCard(){
 	char cardPersonSQL[strlen(templateCardPersonSQL)+10];
 	sprintf(cardPersonSQL, templateCardPersonSQL, getId());
 	std::cout << "SQL =" << cardPersonSQL << std::endl;
+	std::cout << "Данные о сотруднике:" << std::endl;
+	MYSQL_ROW row;
+	row = mysql_fetch_row(data_from_BD);
+	std::cout << "звание: " << row[14] << std::endl;
+	std::cout << "фамилия: " << row[1] << std::endl;
 }
 
 const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, parent, person_no, sex, birthday, placeborn, payposition, kodunit, field_duty, dopusk, inn, file_image, GET_CURRENT_ACTION(idPerson, 1, 0) as rank_person, GET_CURRENT_ACTION(idPerson, 2, 0) as position_person, GET_CURRENT_ACTION(idPerson, 3, 0) as class_person, GET_FULL_NAME_UNIT_LEVEL(kodunit, -1, 'i') as name_unit FROM main WHERE idPerson = ";
