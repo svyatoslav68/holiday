@@ -33,7 +33,8 @@ TPerson::TPerson(int id){
 	if (mysql_status){
 		std::cout << "Ошибка при выполнении запроса: " << SQL << std::endl;
 	}
-	data_from_BD = mysql_store_result(appParametrs.getDescriptorBD());
+	else
+		data_from_BD = mysql_store_result(appParametrs.getDescriptorBD());
 	//int num_fields = mysql_num_fields(data_from_BD);
 	//if (!num_fields == 1)
 	//	std::cout << "Что-то не так. Запрос " << SQL << " вернул не одну запись" << std::endl;
@@ -54,9 +55,11 @@ string TPerson::getFamilyIO() const{
 void TPerson::displayCard(){
 	//ListPersons::const_iterator it = listPersons.findRecordId(recordId);
 	//MYSQL descriptorBD = listPersons.getDescriptorBD();
-	char cardPersonSQL[strlen(templateCardPersonSQL)+10];
+	/*char cardPersonSQL[strlen(templateCardPersonSQL)+10];
 	sprintf(cardPersonSQL, templateCardPersonSQL, getId());
-	std::cout << "SQL =" << cardPersonSQL << std::endl;
+	std::cout << "SQL =" << cardPersonSQL << std::endl;*/
+	if (!data_from_BD)
+		return;
 	std::cout << "Данные о сотруднике:" << std::endl;
 	MYSQL_ROW row;
 	row = mysql_fetch_row(data_from_BD);
