@@ -31,7 +31,8 @@ int main(int argc, char **argv){
 	lstPersons.load();
 	ProcessingPersonMenu ppMenu;
 	ListPersonsMenu lMenu(lstPersons, &ppMenu);
-	PersonMenu pMenu(&lMenu);
+	SelectUnitMenu uMenu;
+	PersonMenu pMenu(&lMenu, &uMenu);
 	GraphicMenu gMenu;
 	MainMenu mainMenu(&pMenu, &gMenu);
 	Menu::enterMenu(&mainMenu);

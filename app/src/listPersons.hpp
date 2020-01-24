@@ -26,10 +26,10 @@ public:
 
 class ListPersons {
 private:
-	typedef std::vector<TPerson> tcontent; //Тип содержимого списка персонала
+	typedef std::vector<TPerson> TContent; //Тип содержимого списка персонала
 public:
-	typedef tcontent::const_iterator const_iterator;
-	typedef tcontent::iterator iterator;
+	typedef TContent::const_iterator const_iterator;
+	typedef TContent::iterator iterator;
 	ListPersons();
 	~ListPersons();
 	void load();	
@@ -37,7 +37,7 @@ public:
 	const_iterator end() const {return content.end();}
 	const_iterator findRecordId(int recordId);
 private:
-	tcontent content;
+	TContent content;
 	iterator getById(int recordId);
 	const_iterator getById(int recordId) const;
 };

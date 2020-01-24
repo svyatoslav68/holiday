@@ -16,6 +16,7 @@
 #include "personsDisplayList.hpp"
 #include "listPersons.hpp"
 #include "menu.hpp"
+#include "data_from_sql.hpp"
 
 using std::string; 
 
@@ -148,8 +149,7 @@ void MainMenu::quit(){
 	exitMenu();
 }
 
-PersonMenu::PersonMenu(Menu *_listPersonsMenu):listPersonsMenu(_listPersonsMenu){
-}
+PersonMenu::PersonMenu(Menu *_listPersonsMenu, Menu *_selectUnitMenu):listPersonsMenu(_listPersonsMenu), selectUnitMenu(_selectUnitMenu){ }
 
 void PersonMenu::mainLoop(){
 	clearScreen();
@@ -166,6 +166,7 @@ void PersonMenu::mainLoop(){
 }
 
 void PersonMenu::selectUnit(){
+	Menu::enterMenu(selectUnitMenu);
 }
 
 void PersonMenu::manualControl(){
@@ -179,6 +180,21 @@ void PersonMenu::quit(){
 	exitMenu();
 }
 
+SelectUnitMenu::SelectUnitMenu() {}
+
+void SelectUnitMenu::mainLoop(){
+	clearScreen();
+	static const string menu = "Previous, Next, Quit";
+	static const string choices = "PNQ";
+	switch (getMenuSelection(menu, choices)){
+	case 'Q':	quit(); break;
+	default:;
+	}
+}
+
+void SelectUnitMenu::quit(){
+	exitMenu();
+}
 
 GraphicMenu::GraphicMenu(){
 }
@@ -228,14 +244,21 @@ void ListPersonsMenu::quit(){
 }
 
 void ProcessingPersonMenu::mainLoop(){
-	static const string menu = "Quit";
-	static const string choices = "Q";
+	static const string menu = "Add holiday, Quit";
+	static const string choices = "AQ";
 	clearScreen();
 	std::cout << "Выбран сотрудник с идентификатором " << idPerson << std::endl;
 	TPerson myPerson(idPerson);
 	myPerson.displayCard();
+	TypesHoliday th;
+	th.load();
+	th.printContent();
 	uint8_t result = getMenuSelection(menu, choices);
+	if ((result > 0) and (result < 9)){
+		editPlanHoliday(result);
+	}
 	switch (result){
+		case 'A':	addPlanHoliday(); break;
 		case 'Q':	quit(); break;
 		default: ;
 	}
@@ -243,6 +266,12 @@ void ProcessingPersonMenu::mainLoop(){
 
 void ProcessingPersonMenu::setIdPerson(int id){
 	idPerson = id;
+}
+
+void ProcessingPersonMenu::addPlanHoliday(){
+}
+
+void ProcessingPersonMenu::editPlanHoliday(int numItem){
 }
 
 void ProcessingPersonMenu::quit(){

@@ -42,7 +42,7 @@ private:
 
 class PersonMenu : public Menu{
 public:
-	PersonMenu(Menu *_listPersonsMenu);
+	PersonMenu(Menu *_listPersonsMenu, Menu *_selectUnitMenu);
 	void mainLoop();
 private:
 	void selectUnit();
@@ -50,7 +50,16 @@ private:
 	void orderPerson();
 	void quit();
 	Menu *listPersonsMenu;
+	Menu *selectUnitMenu;
 };	
+
+class SelectUnitMenu : public Menu {
+public:
+	SelectUnitMenu();
+	void mainLoop();
+private:
+	void quit();
+};
 
 class GraphicMenu :public Menu {
 public:
@@ -68,6 +77,8 @@ public:
 	void setIdPerson(int id);
 private:
 	int idPerson;
+	void addPlanHoliday();
+	void editPlanHoliday(int numItem);
 	void quit();
 };
 

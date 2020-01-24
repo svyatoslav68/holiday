@@ -1,1 +1,4 @@
 .build
+BD
+app/CMakeFiles
+tests/CMakeFiles

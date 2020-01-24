@@ -6,7 +6,7 @@
 
 using std::string; 
 TPerson::TPerson(){
-	data_from_BD = 0;
+	data_from_BD = nullptr;
 }
 
 TPerson::TPerson(const TPerson &p){
@@ -21,7 +21,7 @@ TPerson::TPerson(const TPerson &p){
 }
 
 TPerson::TPerson(int id){
-	data_from_BD = 0;
+	data_from_BD = nullptr;
 	dataId = id;
 	std::stringstream ss;
 	ss << templateCardPersonSQL << id;
@@ -71,14 +71,14 @@ const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, par
 
 void ListPersons::load(){
 	int mysql_status = 0;
-	string SQL = "SELECT idPerson, family, name, parent FROM main";
-	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
+	const char *SQL = "SELECT idPerson, family, name, parent FROM main";
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL);
 	if (mysql_status){
 		std::cout << "Ошибка при выполнении запроса" << std::endl;
 	}
 	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
 	MYSQL_ROW row;
-	int num_fields = mysql_num_fields(result);
+	//int num_fields = mysql_num_fields(result);
 	while ((row = mysql_fetch_row(result))){
 		content.push_back(TPerson(boost::lexical_cast<int>(row[0]), row[1], row[2], row[3]));
 		/*for(int i = 0; i < num_fields; i++){
