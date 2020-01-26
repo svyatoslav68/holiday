@@ -129,3 +129,11 @@ void DisplayList::fillCachedBkwd(int start, int needed){
 	}
 }
 
+void DisplayList::printAll(){
+	auto it = cache.cbegin();
+	while (it < cache.cend()){
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+}
+

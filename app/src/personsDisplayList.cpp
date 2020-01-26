@@ -26,6 +26,10 @@ void PersonsDisplayList::displayRecord(int recordId){
 }
 
 bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int> &result){
+/* Возвратить порцию данных из содержимого (listPersons). 
+	- startId - позиция, начиная с которой возвращать данные;
+	- numRecords - количество возвращаемых данных, если отрицательное, то данные брать до startId;
+	- result - ссылка на вектор, в котором будут возвращаемые данные */
 	result.clear();
 	if (numRecords == 0) 
 		return false;
@@ -60,4 +64,3 @@ bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int>
 	}
 	return true;
 }
-

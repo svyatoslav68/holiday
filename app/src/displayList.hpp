@@ -51,6 +51,7 @@ class DisplayList {
 		bool atStart();		// True, если показываемый список является первым
 		bool atEnd();		// True, если показываемый список является последним
 		void reset();
+		void printAll();
 };
 
 #endif //DISPLAYLIST_HPP
