@@ -48,16 +48,20 @@ bool PersonsDisplayList::fetchMore(int startId, int numRecords, std::vector<int>
 		iter = (forwards ? listPersons.begin() : listPersons.end());
 	else {
 		iter = listPersons.findRecordId(startId);
+		/* Если возвращаться данные будут вперед от startId, то будет использоваться
+		постфиксная форма изменения итератора. Условиме будет равенство end(), 
+		указывающим за последним итераторм listPersons. Поэтому далее итератор 
+		инкрементируется. */
 		if (forwards)
 			++iter;
 	}
 	if (forwards) {
-		while (iter != listPersons.end() && numRecords-- >0)
+		while (iter != listPersons.end() && numRecords-- > 0)
 			result.push_back((iter++)->getId());
 		return iter == listPersons.end();
 	}
 	else {
-		while (iter != listPersons.begin() && numRecords-- >0)
+		while (iter != listPersons.begin() && numRecords-- > 0)
 			result.push_back((--iter)->getId());
 		std::reverse(result.begin(), result.end());
 		return iter == listPersons.begin();

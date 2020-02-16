@@ -15,10 +15,13 @@
 #include <boost/lexical_cast.hpp>
 #include "personsDisplayList.hpp"
 #include "listPersons.hpp"
+#include "listUnits.hpp"
 #include "menu.hpp"
 #include "data_from_sql.hpp"
 
 using std::string; 
+
+extern clParametrs appParametrs;
 
 Menu::Menu(){
 }
@@ -116,7 +119,10 @@ void Menu::clearScreen(){
 // Определение статической переменной-члена класса
 std::stack<Menu *> Menu::menuStack;
 
-MainMenu::MainMenu(Menu *_personMenu, Menu *_graphicMenu):personMenu(_personMenu), graphicMenu(_graphicMenu) {
+/*MainMenu::MainMenu(){
+	personMenu = nullptr;
+	graphicMenu*/
+MainMenu::MainMenu(Menu *_personMenu, Menu *_graphicMenu, Menu *_settingsMenu):personMenu(_personMenu), graphicMenu(_graphicMenu), settingsMenu(_settingsMenu){
 }
 
 void MainMenu::mainLoop(){
@@ -134,6 +140,12 @@ void MainMenu::mainLoop(){
 }
 
 void MainMenu::persons(){
+	//ListPersons lstPersons;
+	//lstPersons.load();
+	//ProcessingPersonMenu *ppMenu = new ProcessingPersonMenu();
+	//ListPersonsMenu *lMenu = new ListPersonsMenu(lstPersons, ppMenu);
+	//personMenu = new PersonMenu(nullptr);
+	//personMenu = new PersonMenu(lMenu);
 	Menu::enterMenu(personMenu);
 }
 
@@ -142,31 +154,26 @@ void MainMenu::graphic(){
 }
 
 void MainMenu::settings(){
-
+	Menu::enterMenu(settingsMenu);
 }
 
 void MainMenu::quit(){
 	exitMenu();
 }
 
-PersonMenu::PersonMenu(Menu *_listPersonsMenu, Menu *_selectUnitMenu):listPersonsMenu(_listPersonsMenu), selectUnitMenu(_selectUnitMenu){ }
+PersonMenu::PersonMenu(Menu *_listPersonsMenu):listPersonsMenu(_listPersonsMenu){ }
 
 void PersonMenu::mainLoop(){
 	clearScreen();
 	//std::cout << "************ Person menu **************" << std::endl;
-	static const string menu = "Select unit, Manual control, Order person, Quit?";
-	static const string choices = "SMOQ";
+	static const string menu = "Manual control, Order person, Quit?";
+	static const string choices = "MOQ";
 	switch (getMenuSelection(menu, choices)){
-	case 'S': selectUnit();		break;
 	case 'M': manualControl();	break;
 	case 'O': orderPerson();	break;
 	case 'Q':	quit(); break;
 	default:;
 	}
-}
-
-void PersonMenu::selectUnit(){
-	Menu::enterMenu(selectUnitMenu);
 }
 
 void PersonMenu::manualControl(){
@@ -180,16 +187,28 @@ void PersonMenu::quit(){
 	exitMenu();
 }
 
-SelectUnitMenu::SelectUnitMenu() {}
-
 void SelectUnitMenu::mainLoop(){
 	clearScreen();
+	displayList.display();
+	displayList.printAll();
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
-	switch (getMenuSelection(menu, choices)){
+	std::cout << "Выбрано подразделение : " << TUnit(appParametrs.getIdUnit()).getFullName() << std::endl;
+	uint8_t result = getMenuSelection(menu, choices);
+	if ((result > 0) and (result <= displayList.number_strings)){
+		selectUnit(result);
+	}
+	switch (result){
+	case 'P': displayList.pageUp();break;
+	case 'N': displayList.pageDown();break;
 	case 'Q':	quit(); break;
 	default:;
 	}
+}
+
+void SelectUnitMenu::selectUnit(uint8_t _idUnit){
+	int selectedIdUnit = displayList.getIdRecord(_idUnit);
+	appParametrs.setIdUnit(selectedIdUnit);
 }
 
 void SelectUnitMenu::quit(){
@@ -219,6 +238,7 @@ ListPersonsMenu::ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu
 void ListPersonsMenu::mainLoop(){
 	clearScreen();
 	displayList.display();
+	displayList.printAll();
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
 	uint8_t result = getMenuSelection(menu, choices);
@@ -275,6 +295,43 @@ void ProcessingPersonMenu::editPlanHoliday(int numItem){
 }
 
 void ProcessingPersonMenu::quit(){
+	exitMenu();
+}
+
+void ProcessingUnitMenu::mainLoop(){
+	static const string menu = "Quit";
+	static const string choices  = "Q";
+	clearScreen();
+	std::cout << "Выбрано подразделение с идентификатором " << idUnit << std::endl;
+	uint8_t result = getMenuSelection(menu, choices);
+	switch (result){
+		case 'Q': quit(); break;
+		default: ;
+	}
+}
+
+void ProcessingUnitMenu::quit(){
+	exitMenu();
+}
+
+void SettingsMenu::mainLoop(){
+	static const string menu = "Select unit, Quit";
+	static const string choices  = "SQ";
+	clearScreen();
+	uint8_t result = getMenuSelection(menu, choices);
+	switch (result){
+		case 'S': selectUnit();		break;
+		case 'Q':	quit(); break;
+		default: ;
+	}
+}
+
+void SettingsMenu::selectUnit(){
+	Menu::enterMenu(selectUnitMenu);
+}
+
+
+void SettingsMenu::quit(){
 	exitMenu();
 }
 

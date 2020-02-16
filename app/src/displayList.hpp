@@ -44,6 +44,7 @@ class DisplayList {
 		/* Функция возвращает идентификатор записи по номеру строки записи в 
 		 * отображаемой странице */
 		int getIdRecord(int number);
+		void executeFetchMore(int startId, int numRecords, std::vector<int> &result);
 		void display();
 		void pageUp();
 		void pageDown();

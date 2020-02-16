@@ -4,8 +4,11 @@
  *****        Заголовок модуля меню 		  ********
  *****             menu.hpp                   ********
  ****************************************************/
+#include "listUnits.hpp"
+#include "unitsDisplayList.hpp"
 
 class Menu {
+// Виртуальный класс, предок всех меню
 public:
 	Menu();
 	~Menu();
@@ -24,12 +27,15 @@ protected:
 	static uint8_t getMenuSelection(const std::string& menu, const string& choices);
 	static void clearScreen();
 private:
+	// Статический член класса
 	static std::stack<Menu *> menuStack;
 };
 
 class MainMenu : public Menu{
 public:
-	MainMenu(Menu *_personMenu, Menu *_graphicMenu);
+	MainMenu();
+	MainMenu(Menu *_personMenu, Menu *_graphicMenu, Menu *_settingsMenu);
+	//void setPersonMenu(Menu *_personMenu) {personMenu = _personMenu;}
 	void mainLoop();
 private:
 	void persons();
@@ -38,26 +44,38 @@ private:
 	void quit();
 	Menu *personMenu;
 	Menu *graphicMenu;
+	Menu *settingsMenu;
 };
 
 class PersonMenu : public Menu{
 public:
-	PersonMenu(Menu *_listPersonsMenu, Menu *_selectUnitMenu);
+	PersonMenu(Menu *_listPersonsMenu);
 	void mainLoop();
 private:
-	void selectUnit();
 	void manualControl();
 	void orderPerson();
 	void quit();
 	Menu *listPersonsMenu;
-	Menu *selectUnitMenu;
 };	
+
+class ProcessingUnitMenu:public Menu{
+public:
+	ProcessingUnitMenu() {}
+	void mainLoop();
+private:
+	const int idUnit = -1;
+	void quit();
+};
 
 class SelectUnitMenu : public Menu {
 public:
-	SelectUnitMenu();
+	SelectUnitMenu(ListUnits &listUnits_):listUnits(listUnits_),displayList(listUnits_) { }
 	void mainLoop();
 private:
+	ListUnits &listUnits;
+	UnitsDisplayList displayList;
+	ProcessingUnitMenu *unitMenu;
+	void selectUnit(uint8_t);
 	void quit();
 };
 
@@ -93,4 +111,15 @@ private:
 	PersonsDisplayList displayList;
 	ProcessingPersonMenu *personMenu;
 };
+
+class SettingsMenu:public Menu {
+public:
+	SettingsMenu(Menu *_selectUnitMenu):selectUnitMenu(_selectUnitMenu){};
+	void mainLoop();
+private:
+	void selectUnit();
+	void quit();
+	Menu *selectUnitMenu;
+};
+
 #endif //MENU_HPP

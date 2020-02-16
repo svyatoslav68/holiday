@@ -19,6 +19,8 @@ public:
 	clParametrs();
 	clParametrs(int argc, char *argv[]);
 	void setArgs(int argc, char *argv[]);
+	void setIdUnit(int _idUnit) {idUnit = _idUnit;}
+	int getIdUnit() {return idUnit;}
 	bool isHelp();
 	bool isVersion();
 	MYSQL *getDescriptorBD();
@@ -27,5 +29,9 @@ private:
 	po::options_description ops_desc; // Options description (Описание опций)
 	po::positional_options_description pos_desc; // Positional options description
 	po::variables_map op_store;		// Container for store received options
+	/*****************************************************************************
+	** опции, значения которых могут меняться из меню приложения *****************
+	*****************************************************************************/
+	int idUnit; // Идентификатор подразделения
 };
 #endif //CL_PARAMETRS_HPP

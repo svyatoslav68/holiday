@@ -31,10 +31,16 @@ int main(int argc, char **argv){
 	lstPersons.load();
 	ProcessingPersonMenu ppMenu;
 	ListPersonsMenu lMenu(lstPersons, &ppMenu);
-	SelectUnitMenu uMenu;
-	PersonMenu pMenu(&lMenu, &uMenu);
+	//ListPersonsMenu lMenu(nullptr, &ppMenu);
+	ListUnits lstUnits;
+	lstUnits.load();
+	SelectUnitMenu uMenu(lstUnits);
+	SettingsMenu sMenu(&uMenu);
+	PersonMenu pMenu(&lMenu);
+	//PersonMenu pMenu(nullptr);
 	GraphicMenu gMenu;
-	MainMenu mainMenu(&pMenu, &gMenu);
+	//MainMenu mainMenu(nullptr, nullptr, &sMenu);
+	MainMenu mainMenu(&pMenu, &gMenu, &sMenu);
 	Menu::enterMenu(&mainMenu);
 	while (Menu::isActive())
 		Menu::activeMenu()->mainLoop();

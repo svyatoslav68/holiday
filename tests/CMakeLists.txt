@@ -6,11 +6,12 @@ set(TARGET_DISPLAY display_lists)
 set(SOURCE_DIR src)
 set(SOURCE_APP ../app/src)
 
+set(SOURCES_C ${SOURCE_APP}/mysql_connect.c)
+
 set(CMAKE_BINARY_DIR ./build)
 
-include_directories(${SOURCE_APP})
 add_executable(${TARGET} ${SOURCE_DIR}/string_test.cpp)# ${SOURCE_APP}/str_from_file.cpp)
-
+target_include_directories(${TARGET} PUBLIC ${SOURCE_APP})
 target_sources(${TARGET} PUBLIC ${SOURCE_APP}/str_from_file.cpp)
 
 set_target_properties(
@@ -37,12 +38,24 @@ endif()
 find_package(Boost REQUIRED COMPONENTS regex program_options date_time)
 
 add_executable(${TARGET_DISPLAY} ${SOURCE_DIR}/display_lists.cpp)
-
-target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/listPersons.cpp)
-target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/cl_parametrs.cpp)
-
 target_link_libraries(${TARGET_DISPLAY} ${MariaDBClient_LIBRARY})
 target_include_directories(${TARGET_DISPLAY} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP})
+
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/displayList.cpp)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/unitsDisplayList.cpp)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/personsDisplayList.cpp)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/listUnits.cpp)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/listPersons.cpp)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/str_from_file.cpp)
+
+if (SOURCES_C)
+	message("Найдены файлы для C")
+	message("SOURCES_C = ${SOURCES_C}")
+	target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCES_C})
+endif(SOURCES_C)
+target_sources(${TARGET_DISPLAY} PUBLIC ${SOURCE_APP}/cl_parametrs.cpp)
+
 if(Boost_FOUND)
 	target_link_libraries(${TARGET_DISPLAY} ${Boost_LIBRARIES})
 	target_include_directories(${TARGET_DISPLAY} PUBLIC ${Boost_INCLUDE_DIRS})
@@ -53,4 +66,5 @@ endif()
 set_target_properties(
 	${TARGET_DISPLAY} PROPERTIES
 	CXX_STANDARD 17	#Собирать в соответствии со стандартом c17
+	C_STANDARD	11
 	)

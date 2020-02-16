@@ -55,6 +55,7 @@ void DisplayList::pageUp(){
 		return;
 	fillCachedBkwd(firstVisibleId, number_strings);
 	firstVisibleId = std::max(firstVisibleId - number_strings, 0);
+	std::cout << "pageUp()\n";
 }
 
 int DisplayList::getIdRecord(int number){
@@ -131,9 +132,15 @@ void DisplayList::fillCachedBkwd(int start, int needed){
 
 void DisplayList::printAll(){
 	auto it = cache.cbegin();
+	std::cout << "Содержимое кэша отображаемого списка:" << std::endl;
 	while (it < cache.cend()){
 		std::cout << *it << " ";
+		++it;
 	}
 	std::cout << std::endl;
+}
+
+void DisplayList::executeFetchMore(int startId, int numRecords, std::vector<int> &result){
+	fetchMore(startId, numRecords, result);
 }
 

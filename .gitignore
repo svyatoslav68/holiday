@@ -1,4 +1,6 @@
 .build
-BD
-app/CMakeFiles
-tests/CMakeFiles
+/BD
+/app/CMakeFiles/
+/tests/CMakeFiles/
+/app/Makefile
+/tests/Makefile

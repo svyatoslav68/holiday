@@ -38,10 +38,11 @@ endif()
 
 find_package(Boost REQUIRED COMPONENTS regex program_options date_time)
 
-add_executable(${TARGET} ${SOURCES_CXX} ) #Собрать файл calendar из файла main.cpp
+add_executable(${TARGET} ${SOURCES_CXX} ) 
 target_link_libraries(${TARGET} ${MariaDBClient_LIBRARY})
 target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 if(Boost_FOUND)
+	message("Boost_LIBRARIES = "${Boost_LIBRARIES})
 	target_link_libraries(${TARGET} ${Boost_LIBRARIES})
 	target_include_directories(${TARGET} PUBLIC ${Boost_INCLUDE_DIRS})
 else()
