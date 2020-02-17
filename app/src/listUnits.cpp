@@ -45,11 +45,12 @@ std::string TUnit::getFullName() const {
 	return fullName;
 }
 
-ListUnits::ListUnits() {}
+//ListUnits::ListUnits() {}
 
 ListUnits::~ListUnits() {}
 
-void ListUnits::load() {
+//void ListUnits::load() {
+ListUnits::ListUnits(){
 	int mysql_status = 0;
 	const char *SQL = "SELECT idUnit FROM list_staff";
 	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL);

@@ -24,7 +24,7 @@ void printContent(T container){
 int main(int argc, char **argv){
 	//ListPersons lstItems;
 	ListUnits lstItems;
-	lstItems.load();
+	//lstItems.load();
 	//PersonsDisplayList plist(lstItems);
 	UnitsDisplayList plist(lstItems);
 	plist.display();

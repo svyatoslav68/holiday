@@ -31,7 +31,7 @@ public:
 	~ListUnits();
 	typedef TContent::iterator iterator;
 	typedef TContent::const_iterator const_iterator;
-	void load();
+	//void load();
 	const_iterator begin() const {return content.begin();}
 	const_iterator end() const {return content.end();}
 	const_iterator findRecordId(int recordId);

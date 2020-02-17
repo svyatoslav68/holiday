@@ -6,7 +6,7 @@
 extern "C"{
 #include "mysql_connect.h"
 }
-#include "personsDisplayList.hpp"
+//#include "personsDisplayList.hpp"
 #include "menu.hpp"
 #include "listPersons.hpp"
 #include "cl_parametrs.hpp"
@@ -15,6 +15,7 @@ extern "C"{
 using std::string;
 
 clParametrs appParametrs; // Параметры приложения - глобальная переменная
+extern ListPersons lstPersons;
 
 string getVersion(){
 	return string(g_version);
@@ -27,20 +28,13 @@ int main(int argc, char **argv){
 		std::cout << "Version of app: " << getVersion() << std::endl; 
 		exit(0);
 	}
-	ListPersons lstPersons;
 	lstPersons.load();
-	ProcessingPersonMenu ppMenu;
-	ListPersonsMenu lMenu(lstPersons, &ppMenu);
-	//ListPersonsMenu lMenu(nullptr, &ppMenu);
-	ListUnits lstUnits;
-	lstUnits.load();
-	SelectUnitMenu uMenu(lstUnits);
-	SettingsMenu sMenu(&uMenu);
-	PersonMenu pMenu(&lMenu);
+	//ListPersonsMenu lMenu(lstPersons, nullptr);
+	//SelectUnitMenu uMenu;
+	//SettingsMenu sMenu(&uMenu);
 	//PersonMenu pMenu(nullptr);
-	GraphicMenu gMenu;
 	//MainMenu mainMenu(nullptr, nullptr, &sMenu);
-	MainMenu mainMenu(&pMenu, &gMenu, &sMenu);
+	MainMenu mainMenu(nullptr, nullptr, nullptr);//&sMenu);
 	Menu::enterMenu(&mainMenu);
 	while (Menu::isActive())
 		Menu::activeMenu()->mainLoop();

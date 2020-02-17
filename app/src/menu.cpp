@@ -21,6 +21,8 @@
 
 using std::string; 
 
+ListPersons lstPersons;
+
 extern clParametrs appParametrs;
 
 Menu::Menu(){
@@ -125,6 +127,15 @@ std::stack<Menu *> Menu::menuStack;
 MainMenu::MainMenu(Menu *_personMenu, Menu *_graphicMenu, Menu *_settingsMenu):personMenu(_personMenu), graphicMenu(_graphicMenu), settingsMenu(_settingsMenu){
 }
 
+MainMenu::~MainMenu(){
+	if (personMenu)
+		delete personMenu;
+	if (graphicMenu)
+		delete graphicMenu;
+	if (settingsMenu)
+		delete settingsMenu;
+}
+
 void MainMenu::mainLoop(){
 	clearScreen();
 	//std::cout << "******* Main menu *********" << std::endl;
@@ -146,14 +157,20 @@ void MainMenu::persons(){
 	//ListPersonsMenu *lMenu = new ListPersonsMenu(lstPersons, ppMenu);
 	//personMenu = new PersonMenu(nullptr);
 	//personMenu = new PersonMenu(lMenu);
+	PersonMenu *pMenu = new PersonMenu(nullptr);
+	personMenu = pMenu;
 	Menu::enterMenu(personMenu);
 }
 
 void MainMenu::graphic(){
+	GraphicMenu *gMenu = new GraphicMenu();
+	graphicMenu = gMenu;
 	Menu::enterMenu(graphicMenu);
 }
 
 void MainMenu::settings(){
+	SettingsMenu *sMenu = new SettingsMenu(nullptr);
+	settingsMenu = sMenu;
 	Menu::enterMenu(settingsMenu);
 }
 
@@ -162,6 +179,11 @@ void MainMenu::quit(){
 }
 
 PersonMenu::PersonMenu(Menu *_listPersonsMenu):listPersonsMenu(_listPersonsMenu){ }
+
+PersonMenu::~PersonMenu(){
+	if (listPersonsMenu)
+		delete listPersonsMenu;
+}
 
 void PersonMenu::mainLoop(){
 	clearScreen();
@@ -177,6 +199,8 @@ void PersonMenu::mainLoop(){
 }
 
 void PersonMenu::manualControl(){
+	ListPersonsMenu *lMenu = new ListPersonsMenu(lstPersons, nullptr);
+	listPersonsMenu = lMenu;
 	Menu::enterMenu(listPersonsMenu);
 }
 
@@ -187,27 +211,36 @@ void PersonMenu::quit(){
 	exitMenu();
 }
 
+SelectUnitMenu::SelectUnitMenu(){
+	//listUnits.load();	
+	displayList = new UnitsDisplayList(listUnits);
+}
+
+SelectUnitMenu::~SelectUnitMenu(){
+
+}
+
 void SelectUnitMenu::mainLoop(){
 	clearScreen();
-	displayList.display();
-	displayList.printAll();
+	displayList->display();
+	displayList->printAll();
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
 	std::cout << "Выбрано подразделение : " << TUnit(appParametrs.getIdUnit()).getFullName() << std::endl;
 	uint8_t result = getMenuSelection(menu, choices);
-	if ((result > 0) and (result <= displayList.number_strings)){
+	if ((result > 0) and (result <= displayList->number_strings)){
 		selectUnit(result);
 	}
 	switch (result){
-	case 'P': displayList.pageUp();break;
-	case 'N': displayList.pageDown();break;
+	case 'P': displayList->pageUp();break;
+	case 'N': displayList->pageDown();break;
 	case 'Q':	quit(); break;
 	default:;
 	}
 }
 
 void SelectUnitMenu::selectUnit(uint8_t _idUnit){
-	int selectedIdUnit = displayList.getIdRecord(_idUnit);
+	int selectedIdUnit = displayList->getIdRecord(_idUnit);
 	appParametrs.setIdUnit(selectedIdUnit);
 }
 
@@ -235,6 +268,11 @@ void GraphicMenu::quit(){
 
 ListPersonsMenu::ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu *_pMenu):listPersons(_listPersons),displayList(_listPersons), personMenu(_pMenu){ } 
 
+ListPersonsMenu::~ListPersonsMenu(){
+	if (personMenu)
+		delete personMenu;
+}
+
 void ListPersonsMenu::mainLoop(){
 	clearScreen();
 	displayList.display();
@@ -255,12 +293,18 @@ void ListPersonsMenu::mainLoop(){
 }
 
 void ListPersonsMenu::selectPerson(uint8_t number){
+	ProcessingPersonMenu *ppMenu = new ProcessingPersonMenu();
+	personMenu = ppMenu;
 	personMenu->setIdPerson(displayList.getIdRecord(static_cast<int>(number)));
 	Menu::enterMenu(personMenu);
 }
 
 void ListPersonsMenu::quit(){
 	exitMenu();
+}
+
+ProcessingPersonMenu::~ProcessingPersonMenu(){
+
 }
 
 void ProcessingPersonMenu::mainLoop(){
@@ -314,6 +358,11 @@ void ProcessingUnitMenu::quit(){
 	exitMenu();
 }
 
+SettingsMenu::~SettingsMenu(){
+	if (selectUnitMenu)
+		delete selectUnitMenu;
+}
+
 void SettingsMenu::mainLoop(){
 	static const string menu = "Select unit, Quit";
 	static const string choices  = "SQ";
@@ -327,6 +376,8 @@ void SettingsMenu::mainLoop(){
 }
 
 void SettingsMenu::selectUnit(){
+	SelectUnitMenu *uMenu = new SelectUnitMenu();
+	selectUnitMenu = uMenu;
 	Menu::enterMenu(selectUnitMenu);
 }
 

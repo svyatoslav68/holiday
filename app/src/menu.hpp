@@ -4,14 +4,18 @@
  *****        Заголовок модуля меню 		  ********
  *****             menu.hpp                   ********
  ****************************************************/
-#include "listUnits.hpp"
-#include "unitsDisplayList.hpp"
+#include "unitsDisplayList.hpp" 
+#include "personsDisplayList.hpp"
+
+class ListPersons;
+class ListUnits;
+class PersonsDisplayList;
 
 class Menu {
 // Виртуальный класс, предок всех меню
 public:
 	Menu();
-	~Menu();
+	virtual ~Menu();
 	// Основной цикл меню
 	virtual void mainLoop() = 0;
 	// Возвращаем текущее меню
@@ -24,7 +28,7 @@ public:
 	static bool isActive();
 protected:
 	static int getMenuSelection(const std::string& menu);
-	static uint8_t getMenuSelection(const std::string& menu, const string& choices);
+	static uint8_t getMenuSelection(const std::string& menu, const std::string& choices);
 	static void clearScreen();
 private:
 	// Статический член класса
@@ -36,6 +40,7 @@ public:
 	MainMenu();
 	MainMenu(Menu *_personMenu, Menu *_graphicMenu, Menu *_settingsMenu);
 	//void setPersonMenu(Menu *_personMenu) {personMenu = _personMenu;}
+	~MainMenu();
 	void mainLoop();
 private:
 	void persons();
@@ -50,6 +55,7 @@ private:
 class PersonMenu : public Menu{
 public:
 	PersonMenu(Menu *_listPersonsMenu);
+	~PersonMenu();
 	void mainLoop();
 private:
 	void manualControl();
@@ -69,11 +75,12 @@ private:
 
 class SelectUnitMenu : public Menu {
 public:
-	SelectUnitMenu(ListUnits &listUnits_):listUnits(listUnits_),displayList(listUnits_) { }
+	SelectUnitMenu();//ListUnits &listUnits_):listUnits(listUnits_),displayList(listUnits_) { }
+	~SelectUnitMenu();
 	void mainLoop();
 private:
-	ListUnits &listUnits;
-	UnitsDisplayList displayList;
+	ListUnits listUnits;
+	UnitsDisplayList *displayList;
 	ProcessingUnitMenu *unitMenu;
 	void selectUnit(uint8_t);
 	void quit();
@@ -87,10 +94,10 @@ private:
 	void quit();
 };
 
-
 class ProcessingPersonMenu:public Menu{
 public:
 	ProcessingPersonMenu(){idPerson = -1;};
+	~ProcessingPersonMenu();
 	void mainLoop();
 	void setIdPerson(int id);
 private:
@@ -103,6 +110,7 @@ private:
 class ListPersonsMenu:public Menu {
 public:
 	ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu *_pMenu);
+	~ListPersonsMenu();
 	void mainLoop();
 private:
 	void selectPerson(uint8_t number);
@@ -115,6 +123,7 @@ private:
 class SettingsMenu:public Menu {
 public:
 	SettingsMenu(Menu *_selectUnitMenu):selectUnitMenu(_selectUnitMenu){};
+	~SettingsMenu();
 	void mainLoop();
 private:
 	void selectUnit();

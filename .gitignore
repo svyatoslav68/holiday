@@ -4,3 +4,5 @@
 /tests/CMakeFiles/
 /app/Makefile
 /tests/Makefile
+cmake_install.cmake
+.DS_Store
