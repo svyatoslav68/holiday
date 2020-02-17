@@ -19,6 +19,7 @@ public:
 	std::string getNameType(int i, uint8_t padeg);
 	void printContent();
 private:
+	static const std::string SQL_load;
 	typedef std::map<int, std::pair<std::string, std::string>> tcontent;
 	tcontent content_map;
 };

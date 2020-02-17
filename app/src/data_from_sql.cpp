@@ -6,18 +6,19 @@
 #include <iostream>
 #include "cl_parametrs.hpp"
 #include "data_from_sql.hpp"
+#include "str_from_file.hpp"
 
 extern clParametrs appParametrs;
+const std::string TypesHoliday::SQL_load = StrFromFile("SQL.txt", ":").getString("loadTypes");
 
 TypesHoliday::TypesHoliday(){
 }
 
 void TypesHoliday::load(){
 	int mysql_status = 0;
-	std::string SQL = "SELECT id_type_otpusk, name_type, name_type_r FROM types_otpusk";
-	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL_load.c_str());
 	if (mysql_status){
-		std::cout << "Ошибка при выполнении запроса: " << SQL << std::endl;
+		std::cout << "Ошибка при выполнении запроса: " << SQL_load << std::endl;
 		return;
 	}
 	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
@@ -33,6 +34,8 @@ void TypesHoliday::load(){
 }
 
 std::string TypesHoliday::operator[](int i){
+/* Возвращает название типа отпуска в именительном падеже,
+соответствующее коду типа в квадратных скобках */
 	if (content_map.empty())
 		throw NoIndex();
 	auto it = content_map.find(i);

@@ -7,6 +7,9 @@
 #include "str_from_file.hpp"
 #include "listUnits.hpp"
 
+//const char *SQL = "SELECT GET_FULL_NAME_UNIT_LEVEL(idUNit, 2, 'i'), GET_FULL_NAME_UNIT_LEVEL(idUNit, -1, 'i')";
+const std::string TUnit::templateSQL = StrFromFile("SQL.txt", ":").getString("TUnit");
+
 TUnit::TUnit(){
 	data_from_BD = nullptr;
 	//file_strings = StrFromFile("SQL.txt", ":");
@@ -38,8 +41,6 @@ std::string TUnit::getShortName() const{
 	return shortName;
 }
 
-//const char *SQL = "SELECT GET_FULL_NAME_UNIT_LEVEL(idUNit, 2, 'i'), GET_FULL_NAME_UNIT_LEVEL(idUNit, -1, 'i')";
-const std::string TUnit::templateSQL = StrFromFile("SQL.txt", ":").getString("TUnit");
 
 std::string TUnit::getFullName() const {
 	return fullName;
