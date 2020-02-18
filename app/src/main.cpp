@@ -8,6 +8,7 @@ extern "C"{
 }
 //#include "personsDisplayList.hpp"
 #include "menu.hpp"
+#include "parent_menu.hpp"
 #include "listPersons.hpp"
 #include "cl_parametrs.hpp"
 #include "version.hpp"
@@ -34,7 +35,7 @@ int main(int argc, char **argv){
 	//SettingsMenu sMenu(&uMenu);
 	//PersonMenu pMenu(nullptr);
 	//MainMenu mainMenu(nullptr, nullptr, &sMenu);
-	MainMenu mainMenu(nullptr, nullptr, nullptr);//&sMenu);
+	MainMenu mainMenu;//nullptr, nullptr, nullptr);//&sMenu);
 	Menu::enterMenu(&mainMenu);
 	while (Menu::isActive())
 		Menu::activeMenu()->mainLoop();

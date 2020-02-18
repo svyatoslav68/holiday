@@ -11,29 +11,7 @@ class ListPersons;
 class ListUnits;
 class PersonsDisplayList;
 
-class Menu {
-// Виртуальный класс, предок всех меню
-public:
-	Menu();
-	virtual ~Menu();
-	// Основной цикл меню
-	virtual void mainLoop() = 0;
-	// Возвращаем текущее меню
-	static Menu *activeMenu();
-	// Помещение меню на вершину стека
-	static void enterMenu(Menu *);
-	// Выход из меню. Подвигаем стек вверх. 
-	static void exitMenu();
-	// True, если на вершине стека есть меню
-	static bool isActive();
-protected:
-	static int getMenuSelection(const std::string& menu);
-	static uint8_t getMenuSelection(const std::string& menu, const std::string& choices);
-	static void clearScreen();
-private:
-	// Статический член класса
-	static std::stack<Menu *> menuStack;
-};
+#include "parent_menu.hpp"
 
 class MainMenu : public Menu{
 public:
@@ -54,6 +32,7 @@ private:
 
 class PersonMenu : public Menu{
 public:
+	PersonMenu();
 	PersonMenu(Menu *_listPersonsMenu);
 	~PersonMenu();
 	void mainLoop();
@@ -109,6 +88,7 @@ private:
 
 class ListPersonsMenu:public Menu {
 public:
+	ListPersonsMenu(ListPersons &_listPersons);
 	ListPersonsMenu(ListPersons &_listPersons, ProcessingPersonMenu *_pMenu);
 	~ListPersonsMenu();
 	void mainLoop();
@@ -122,6 +102,7 @@ private:
 
 class SettingsMenu:public Menu {
 public:
+	SettingsMenu();
 	SettingsMenu(Menu *_selectUnitMenu):selectUnitMenu(_selectUnitMenu){};
 	~SettingsMenu();
 	void mainLoop();
