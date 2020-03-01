@@ -14,7 +14,7 @@ private:
 	string parent;
 	MYSQL_RES *data_from_BD;
 public:
-	static const char *templateCardPersonSQL;
+	static const string templateCardPersonSQL;
 	TPerson();
 	TPerson(const TPerson &p);
 	TPerson(int id);
@@ -32,7 +32,7 @@ public:
 	typedef TContent::iterator iterator;
 	ListPersons();
 	~ListPersons();
-	void load();	
+	void load(int idUnit);	
 	const_iterator begin() const {return content.begin();}
 	const_iterator end() const {return content.end();}
 	const_iterator findRecordId(int recordId);

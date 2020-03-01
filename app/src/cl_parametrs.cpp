@@ -9,6 +9,7 @@
 
 clParametrs::clParametrs(){
 	ops_desc.add_options()
+		("unit,u", po::value<int>(), "Persons unit")
 		("help,h", "Show help")
 		("version,v", "Show version of application")
 	;
@@ -17,6 +18,7 @@ clParametrs::clParametrs(){
 
 clParametrs::clParametrs(int argc, char *argv[]){
 	ops_desc.add_options()
+		("unit,u", po::value<int>(), "Persons unit")
 		("help,h", "Show help")
 		("version,v", "Show version of application")
 	;
@@ -36,6 +38,8 @@ void clParametrs::setArgs(int argc, char *argv[]){
 		std::cout << "Помощь по программе:" << std::endl;
 		std::cout << ops_desc << std::endl;
 	}
+	if(op_store.count("unit"))
+		idUnit=op_store["unit"].as<int>();
 }
 
 bool clParametrs::isHelp(){

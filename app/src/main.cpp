@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 		std::cout << "Version of app: " << getVersion() << std::endl; 
 		exit(0);
 	}
-	lstPersons.load();
+	lstPersons.load(appParametrs.getIdUnit());
 	//ListPersonsMenu lMenu(lstPersons, nullptr);
 	//SelectUnitMenu uMenu;
 	//SettingsMenu sMenu(&uMenu);

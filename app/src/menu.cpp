@@ -227,6 +227,7 @@ void SelectUnitMenu::mainLoop(){
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
 	std::cout << "Выбрано подразделение : " << TUnit(appParametrs.getIdUnit()).getFullName() << std::endl;
+	lstPersons.load(appParametrs.getIdUnit());
 	uint8_t result = getMenuSelection(menu, choices);
 	if ((result > 0) and (result <= displayList->number_strings)){
 		selectUnit(result);
