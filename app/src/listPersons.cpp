@@ -1,10 +1,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "str_from_file.hpp"
 #include "listPersons.hpp"
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 
 using std::string; 
+
+const string TPerson::templateCardPersonSQL = StrFromFile("SQL.txt", ":").getString("getDataPerson");
+
 TPerson::TPerson(){
 	data_from_BD = nullptr;
 }
@@ -23,9 +28,10 @@ TPerson::TPerson(const TPerson &p){
 TPerson::TPerson(int id){
 	data_from_BD = nullptr;
 	dataId = id;
+	boost::format fmter(templateCardPersonSQL);
 	std::stringstream ss;
-	ss << templateCardPersonSQL << id;
-	string SQL;
+	ss << fmter%id;
+	string SQL = ss.str();
 	SQL = ss.str();
 	std::cout << "Выполняется запрос :" << SQL << std::endl;
 	int mysql_status = 0;
@@ -67,12 +73,16 @@ void TPerson::displayCard(){
 	std::cout << "фамилия: " << row[1] << std::endl;
 }
 
-const char *TPerson::templateCardPersonSQL = "SELECT idPerson, family, name, parent, person_no, sex, birthday, placeborn, payposition, kodunit, field_duty, dopusk, inn, file_image, GET_CURRENT_ACTION(idPerson, 1, 0) as rank_person, GET_CURRENT_ACTION(idPerson, 2, 0) as position_person, GET_CURRENT_ACTION(idPerson, 3, 0) as class_person, GET_FULL_NAME_UNIT_LEVEL(kodunit, -1, 'i') as name_unit FROM main WHERE idPerson = ";
 
-void ListPersons::load(){
+void ListPersons::load(int idUnit){
+	content.clear();
 	int mysql_status = 0;
-	const char *SQL = "SELECT idPerson, family, name, parent FROM main";
-	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL);
+	const string templateSQL = StrFromFile("SQL.txt", ":").getString("getListPersons");
+	boost::format fmter(templateSQL);
+	std::stringstream ss;
+	ss << fmter%idUnit;
+	std::string SQL = ss.str();
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
 	if (mysql_status){
 		std::cout << "Ошибка при выполнении запроса" << std::endl;
 	}
