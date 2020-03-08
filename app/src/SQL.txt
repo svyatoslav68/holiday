@@ -3,3 +3,4 @@ ListPerson.getListPersons:SELECT idPerson, family, name, parent FROM main WHERE 
 ListPerson.getListPersons:SELECT idPerson, family, name, parent FROM main
 ListUnits.TUnit:SELECT GET_FULL_NAME_UNIT_LEVEL(%d, 2, 'i'), GET_FULL_NAME_UNIT_LEVEL(%d, -1, 'i')
 TypesHoliday.loadTypes:SELECT id_type_otpusk, name_type, name_type_r FROM types_otpusk
+ListHolidays.loadHolidays:SELECT p.id_otpusk as id, p.plan_begin date, p.plan_size+p.plan_time_travel as size, t.name_type as type FROM plan_otpusk p, types_otpusk t WHERE t.id_type_otpusk=p.cod_type AND YEAR(plan_begin)=%d AND cod_person=%d ORDER BY plan_begin;

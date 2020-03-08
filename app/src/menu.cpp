@@ -143,9 +143,12 @@ SelectUnitMenu::~SelectUnitMenu(){
 }
 
 void SelectUnitMenu::mainLoop(){
+/*Главный цикл меню выбора подразделения. Выводится очередная страница подразделения. Ввод цифры выбирает
+подразделение. А ввод буквы 'p' или 'n' выводит
+предыдущую или следующую страницу списка подразделений */
 	clearScreen();
 	displayList->display();
-	displayList->printAll();
+	//displayList->printAll();
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
 	std::cout << "Выбрано подразделение : " << TUnit(appParametrs.getIdUnit()).getFullName() << std::endl;
@@ -203,8 +206,11 @@ ListPersonsMenu::~ListPersonsMenu(){
 
 void ListPersonsMenu::mainLoop(){
 	clearScreen();
+	/* Отображаем очередную страницу с выбранными
+	сотрудниками. Сотрудника можно выбрать набрав
+	соответствующее число. */
 	displayList.display();
-	displayList.printAll();
+	//displayList.printAll();
 	static const string menu = "Previous, Next, Quit";
 	static const string choices = "PNQ";
 	uint8_t result = getMenuSelection(menu, choices);
@@ -244,6 +250,8 @@ void ProcessingPersonMenu::mainLoop(){
 	std::cout << "Выбран сотрудник с идентификатором " << idPerson << std::endl;
 	TPerson myPerson(idPerson);
 	myPerson.displayCard();
+	/* Создаем и загружаем объект, содержащий список
+	типов отпусков */
 	TypesHoliday th;
 	th.load();
 	th.printContent();

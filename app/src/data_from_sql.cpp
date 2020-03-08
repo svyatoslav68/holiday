@@ -4,9 +4,11 @@
 
 #include <string>
 #include <iostream>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include "cl_parametrs.hpp"
 #include "data_from_sql.hpp"
 #include "str_from_file.hpp"
+#include "tholiday.hpp"
 
 extern clParametrs appParametrs;
 const std::string TypesHoliday::SQL_load = StrFromFile("SQL.txt", ":").getString("loadTypes");
@@ -62,5 +64,24 @@ void TypesHoliday::printContent(){
 		std::cout << it->first << ':' << it->second.first << ',' << it->second.second << ";\n"; 
 		it++;
 	}
+}
+
+const std::string ListHolidays::SQL_holidays = StrFromFile("SQL.txt", ":").getString("loadHolidays");
+ListHolidays::ListHolidays(int idPerson){
+
+}
+
+void ListHolidays::load(){
+
+}
+
+void ListHolidays::printContent(){
+	uint8_t display_number = 0; 
+	auto it = content.cbegin();
+	while (it != content.cend()){
+		display_number++;
+		it++;
+	}
+
 }
 
