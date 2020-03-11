@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/algorithm/string/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include "personsDisplayList.hpp"
@@ -16,6 +17,7 @@
 #include "listUnits.hpp"
 #include "parent_menu.hpp"
 #include "menu.hpp"
+#include "tholiday.hpp"
 #include "data_from_sql.hpp"
 
 using std::string; 
@@ -251,10 +253,13 @@ void ProcessingPersonMenu::mainLoop(){
 	TPerson myPerson(idPerson);
 	myPerson.displayCard();
 	/* Создаем и загружаем объект, содержащий список
-	типов отпусков */
+	типов отпусков 
 	TypesHoliday th;
 	th.load();
-	th.printContent();
+	th.printContent();*/
+	ListHolidays lstHolidays(idPerson);
+	lstHolidays.load();
+	lstHolidays.printContent();
 	uint8_t result = getMenuSelection(menu, choices);
 	if ((result > 0) and (result < 9)){
 		editPlanHoliday(result);

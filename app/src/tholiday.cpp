@@ -2,9 +2,9 @@
 				описание отпуска сотрудника. 
 				    файл  tholiday.cpp
 ***********************************************************/
+#include <iostream>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/format.hpp>
-#include <boost/lexical_cast.hpp>
 #include "tholiday.hpp"
 #include "str_from_file.hpp"
 
@@ -35,3 +35,10 @@ THoliday::THoliday(int cod_holiday){
 		holiday_duration = date_duration(boost::lexical_cast<int>(row[4])+boost::lexical_cast<int>(row[5]));
 	}
 }
+
+void THoliday::displayHoliday() const {
+	date_facet *facet(new date_facet("%d.%m.%Y"));
+	std::cout.imbue(std::locale(std::cout.getloc(), facet));
+	std::cout << std::setw(40) << std::setfill(' ') << std::left << name_holiday << std::setw(13) << date_begin << std::setw(3) << std::right << holiday_duration << std::endl;
+}
+

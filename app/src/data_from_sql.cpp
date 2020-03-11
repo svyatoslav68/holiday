@@ -4,11 +4,14 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
 #include "cl_parametrs.hpp"
+#include "tholiday.hpp"
 #include "data_from_sql.hpp"
 #include "str_from_file.hpp"
-#include "tholiday.hpp"
 
 extern clParametrs appParametrs;
 const std::string TypesHoliday::SQL_load = StrFromFile("SQL.txt", ":").getString("loadTypes");
@@ -28,10 +31,6 @@ void TypesHoliday::load(){
 	int num_fields = mysql_num_fields(result);
 	while ((row = mysql_fetch_row(result))){
 		content_map[boost::lexical_cast<int>(row[0])]=std::make_pair(row[1], row[2]);
-		/*for(int i = 0; i < num_fields; i++){
-			//std::cout << row[i] << " : ";
-		}*/
-		//std::cout << std::endl;
 	}
 }
 
@@ -67,19 +66,35 @@ void TypesHoliday::printContent(){
 }
 
 const std::string ListHolidays::SQL_holidays = StrFromFile("SQL.txt", ":").getString("loadHolidays");
-ListHolidays::ListHolidays(int idPerson){
-
-}
 
 void ListHolidays::load(){
-
+	boost::format fmter(SQL_holidays);
+	std::stringstream ss;
+	ss << fmter%2019%id_person;
+	std::string SQL = ss.str();
+	int mysql_status = 0;
+	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
+	if (mysql_status){
+		std::cout << "Ошибка при выполнении запроса: " << SQL<< std::endl;
+		return;
+	}
+	//std::cout << "Выполнен запрос: " << SQL << std::endl;
+	MYSQL_RES *result = mysql_store_result(appParametrs.getDescriptorBD());
+	MYSQL_ROW row;
+	int num_fields = mysql_num_fields(result);
+	while ((row = mysql_fetch_row(result))){
+		content.push_back(THoliday(id_person, row[1], boost::lexical_cast<int>(row[2]), row[3]));
+	}
 }
 
 void ListHolidays::printContent(){
-	uint8_t display_number = 0; 
+	int display_number = 0; 
 	auto it = content.cbegin();
+	//std::cout << std::setw(3)
 	while (it != content.cend()){
-		display_number++;
+		//display_number++;
+		std::cout << std::setw(3) << std::setfill(' ') << std::right << std::dec << ++display_number << ":";// << std::endl;
+		it->displayHoliday();
 		it++;
 	}
 

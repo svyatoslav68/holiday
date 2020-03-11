@@ -5,7 +5,7 @@
 #define DATA_FROM_SQL_HPP
 
 #include <map>
-class THoliday;
+//class THoliday;
 
 class TypesHoliday {
 /* Класс предоставляет интерфейс получения типов отпусков.
@@ -28,7 +28,7 @@ class ListHolidays{
 /* Класс содержит список отпусков сотрудника, предоставляет
 функции-члены для работы с отпусками */
 public:
-	ListHolidays(int idPerson);
+	ListHolidays(int idPerson):id_person(idPerson) {};
 	void load();
 	void printContent(); // Вывод на печать содержимого
 private:

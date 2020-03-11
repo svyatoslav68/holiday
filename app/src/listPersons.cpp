@@ -33,7 +33,7 @@ TPerson::TPerson(int id){
 	ss << fmter%id;
 	string SQL = ss.str();
 	SQL = ss.str();
-	std::cout << "Выполняется запрос :" << SQL << std::endl;
+	//std::cout << "Выполняется запрос :" << SQL << std::endl;
 	int mysql_status = 0;
 	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());
 	if (mysql_status){
