@@ -70,7 +70,7 @@ const std::string ListHolidays::SQL_holidays = StrFromFile("SQL.txt", ":").getSt
 void ListHolidays::load(){
 	boost::format fmter(SQL_holidays);
 	std::stringstream ss;
-	ss << fmter%2019%id_person;
+	ss << fmter%appParametrs.getYear()%id_person;
 	std::string SQL = ss.str();
 	int mysql_status = 0;
 	mysql_status = mysql_query(appParametrs.getDescriptorBD(), SQL.c_str());

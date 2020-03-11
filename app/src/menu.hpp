@@ -108,6 +108,7 @@ public:
 	void mainLoop();
 private:
 	void selectUnit();
+	void selectYear();
 	void quit();
 	Menu *selectUnitMenu;
 };

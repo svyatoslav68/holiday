@@ -5,11 +5,13 @@
  *****************************************************/
 
 #include <iostream>
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include "cl_parametrs.hpp"
 
 clParametrs::clParametrs(){
 	ops_desc.add_options()
 		("unit,u", po::value<int>(), "Persons unit")
+		("year,y", po::value<int>(), "Year")
 		("help,h", "Show help")
 		("version,v", "Show version of application")
 	;
@@ -40,6 +42,13 @@ void clParametrs::setArgs(int argc, char *argv[]){
 	}
 	if(op_store.count("unit"))
 		idUnit=op_store["unit"].as<int>();
+	if(op_store.count("year"))
+		workYear = op_store["year"].as<int>();
+	else {
+		using bt=boost::gregorian::date;
+		bt today = boost::gregorian::day_clock::local_day();
+		workYear = today.year();
+	}
 }
 
 bool clParametrs::isHelp(){
