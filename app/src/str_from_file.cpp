@@ -7,9 +7,13 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
+//#include <boost/any.hpp>
 #include "str_from_file.hpp"
 
 using std::string;
+namespace pt = boost::property_tree;
 
 StrFromFile::StrFromFile(const char *_delimiter):delimiter(string(_delimiter)){
 }
@@ -79,5 +83,54 @@ string StrFromFile::getModifiedString(const char *key_str, const char *template_
 		result.replace(idx, std::strlen(template_str), replace_str) ;
 	}
 	return result;
+}
+
+ValuesFromXML::ValuesFromXML(const char *_name_file):name_file(string(_name_file)){
+	pt::read_xml(name_file, tree);
+	boost::property_tree::ptree tree_settings = tree.get_child("FILE.SettingsApplication");
+	BOOST_FOREACH(auto param, tree_settings){
+		if(param.first=="description") continue;
+		//boost::any value = string(param.second);
+		//settings_from_file.insert(std::pair<std::string, boost::any>(param.first, value));
+		settings_from_file.insert(std::pair<std::string, std::string>(param.first, param.second.get<std::string>("")));
+	}
+}
+
+void ValuesFromXML::print_settings(){
+	using boost::any_cast;
+	std::cout << "setting from xml-file " << name_file << std::endl;
+	auto it = settings_from_file.cbegin();
+	while (it != settings_from_file.cend()){
+		//std::cout << it->first << "=" << any_cast<string>(it->second) << std::endl;
+		std::cout << it->first << "=" << it->second << std::endl;
+		it++;
+	}
+}
+
+string ValuesFromXML::getStrValue(const char *section, const char *key){
+	boost::property_tree::ptree tree_sql = tree.get_child("FILE.SQL");
+	string result;
+	char str_argument[strlen(section)+strlen(key)+strlen("query")+2];
+	strcpy(str_argument, section);
+	strcat(str_argument, ".");
+	strcat(str_argument, key);
+	strcat(str_argument, ".");
+	strcat(str_argument, "query");
+	//str_argument = new char(100);
+	result =  tree_sql.get<string>(str_argument);
+	//delete str_argument;
+	return result;
+}
+
+int ValuesFromXML::getIntValue(const char *key){
+	const auto it = settings_from_file.find(key);
+	if (it != settings_from_file.cend())
+		return boost::lexical_cast<int>(it->second);
+	else
+		return -1;	
+}
+
+void ValuesFromXML::save_settings(){
+
 }
 

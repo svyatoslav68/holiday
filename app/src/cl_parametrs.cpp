@@ -5,6 +5,8 @@
  *****************************************************/
 
 #include <iostream>
+#include <string>
+#include <cstdlib>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include "cl_parametrs.hpp"
 
@@ -13,6 +15,7 @@ clParametrs::clParametrs(){
 		("unit,u", po::value<int>(), "Persons unit")
 		("year,y", po::value<int>(), "Year")
 		("help,h", "Show help")
+		("save,s", "Save parametrs")
 		("version,v", "Show version of application")
 	;
 	bd_connect(&descriptorBD, name_bd);
@@ -21,7 +24,9 @@ clParametrs::clParametrs(){
 clParametrs::clParametrs(int argc, char *argv[]){
 	ops_desc.add_options()
 		("unit,u", po::value<int>(), "Persons unit")
+		("year,y", po::value<int>(), "Year")
 		("help,h", "Show help")
+		("save,s", "Save parametrs")
 		("version,v", "Show version of application")
 	;
 	po::store(po::command_line_parser(argc, argv).options(ops_desc).positional(pos_desc).run(), op_store);
@@ -29,8 +34,13 @@ clParametrs::clParametrs(int argc, char *argv[]){
 	if(op_store.count("help")){
 		std::cout << "Помощь по программе:" << std::endl;
 		std::cout << ops_desc << std::endl;
+		std::exit(0);
 	}
 	bd_connect(&descriptorBD, name_bd);
+}
+
+void clParametrs::loadFromFile(char *_nameFile){
+	nameFile = std::string(_nameFile);
 }
 
 void clParametrs::setArgs(int argc, char *argv[]){
@@ -39,6 +49,7 @@ void clParametrs::setArgs(int argc, char *argv[]){
 	if(op_store.count("help")){
 		std::cout << "Помощь по программе:" << std::endl;
 		std::cout << ops_desc << std::endl;
+		std::exit(0);
 	}
 	if(op_store.count("unit"))
 		idUnit=op_store["unit"].as<int>();
@@ -49,6 +60,10 @@ void clParametrs::setArgs(int argc, char *argv[]){
 		bt today = boost::gregorian::day_clock::local_day();
 		workYear = today.year();
 	}
+	if(op_store.count("save")){
+	/* Сохраняем значения параметров параметров командной строки в
+	конфигурационном файле settings.xml */
+	}
 }
 
 bool clParametrs::isHelp(){
@@ -57,6 +72,10 @@ bool clParametrs::isHelp(){
 
 bool clParametrs::isVersion(){
 	return op_store.count("version");
+}
+
+bool clParametrs::isSave(){
+	return op_store.count("save");
 }
 
 MYSQL *clParametrs::getDescriptorBD(){

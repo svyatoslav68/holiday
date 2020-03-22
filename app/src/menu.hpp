@@ -109,6 +109,7 @@ public:
 private:
 	void selectUnit();
 	void selectYear();
+	void saveSettings();
 	void quit();
 	Menu *selectUnitMenu;
 };

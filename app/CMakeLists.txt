@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(holiday VERSION 0.3.1)
+project(holiday VERSION 0.3.2)
 
 set(TARGET holiday)
 set(SOURCE_DIR src)

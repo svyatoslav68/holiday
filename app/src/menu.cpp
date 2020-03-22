@@ -312,14 +312,15 @@ SettingsMenu::~SettingsMenu(){
 }
 
 void SettingsMenu::mainLoop(){
-	static const string menu = "Select unit, Select year, Quit";
-	static const string choices  = "SYQ";
+	static const string menu = "Select unit, Select year, Save, Quit";
+	static const string choices  = "UYSQ";
 	clearScreen();
 	uint8_t result = getMenuSelection(menu, choices);
 	switch (result){
-		case 'S': selectUnit();		break;
-		case 'Y':selectYear(); break;
-		case 'Q':	quit(); break;
+		case 'U':selectUnit();		break;
+		case 'Y':selectYear(); 		break;
+		case 'S':saveSettings(); 	break;
+		case 'Q':quit();	 		break;
 		default: ;
 	}
 }
@@ -339,6 +340,9 @@ void SettingsMenu::selectYear(){
 	appParametrs.setYear(input_year);
 }
 
+void SettingsMenu::saveSettings(){
+
+}
 
 void SettingsMenu::quit(){
 	exitMenu();
