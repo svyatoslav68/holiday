@@ -18,7 +18,7 @@ public:
 private:
 	std::string shortName;
 	std::string fullName;
-	static const std::string templateSQL;
+	const std::string templateSQL;
 	int unitId;
 	MYSQL_RES *data_from_BD;
 };

@@ -21,7 +21,7 @@ public:
 	THoliday(int _cod_person, std::string s_date, int duration, std::string _name_holiday):cod_person(_cod_person), date_begin(from_simple_string(std::string(s_date))), holiday_duration(date_duration(duration)), name_holiday(_name_holiday){};
 	void displayHoliday() const;
 private:
-	static const std::string templateSQLHoliday;
+	const std::string templateSQLHoliday;
 	MYSQL_RES *data_from_BD;
 	int cod_person;
 	bt date_begin;	

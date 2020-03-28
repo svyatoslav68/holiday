@@ -10,6 +10,7 @@ extern "C"{
 #include "menu.hpp"
 #include "parent_menu.hpp"
 #include "listPersons.hpp"
+#include "str_from_file.hpp"
 #include "cl_parametrs.hpp"
 #include "version.hpp"
 
@@ -24,6 +25,7 @@ string getVersion(){
 
 int main(int argc, char **argv){
 	appParametrs.setArgs(argc, argv);
+	appParametrs.loadFromFile();
 	setlocale(LC_ALL, "");
 	if (appParametrs.isVersion()){
 		std::cout << "Version of app: " << getVersion() << std::endl; 

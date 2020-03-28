@@ -14,9 +14,10 @@
 #include "str_from_file.hpp"
 
 extern clParametrs appParametrs;
-const std::string TypesHoliday::SQL_load = StrFromFile("SQL.txt", ":").getString("loadTypes");
+//const std::string TypesHoliday::SQL_load = StrFromFile("SQL.txt", ":").getString("loadTypes");
+//const std::string TypesHoliday::SQL_load = ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "TypesHoliday", "loadTypes");
 
-TypesHoliday::TypesHoliday(){
+TypesHoliday::TypesHoliday():SQL_load(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "TypesHoliday", "loadTypes")){
 }
 
 void TypesHoliday::load(){
@@ -65,7 +66,11 @@ void TypesHoliday::printContent(){
 	}
 }
 
-const std::string ListHolidays::SQL_holidays = StrFromFile("SQL.txt", ":").getString("loadHolidays");
+//const std::string ListHolidays::SQL_holidays = StrFromFile("SQL.txt", ":").getString("loadHolidays");
+ListHolidays::ListHolidays(int idPerson):id_person(idPerson),SQL_holidays(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "ListHolidays", "loadHolidays")){
+}
+
+
 
 void ListHolidays::load(){
 	boost::format fmter(SQL_holidays);

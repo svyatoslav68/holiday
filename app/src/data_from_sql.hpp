@@ -19,7 +19,7 @@ public:
 	std::string getNameType(int i, uint8_t padeg);
 	void printContent();
 private:
-	static const std::string SQL_load;
+	const std::string SQL_load;
 	typedef std::map<int, std::pair<std::string, std::string>> tcontent;
 	tcontent content_map;
 };
@@ -28,13 +28,13 @@ class ListHolidays{
 /* Класс содержит список отпусков сотрудника, предоставляет
 функции-члены для работы с отпусками */
 public:
-	ListHolidays(int idPerson):id_person(idPerson) {};
+	ListHolidays(int idPerson);
 	void load();
 	void printContent(); // Вывод на печать содержимого
 private:
-	static const std::string SQL_holidays;
+	int id_person; // Идентификатор сотрудника, отпуска которого содержатся в content
+	const std::string SQL_holidays;
 	typedef std::vector<THoliday> tcontent;
 	tcontent content;
-	int id_person; // Идентификатор сотрудника, отпуска которого содержатся в content
 };
 #endif //DATA_FROM_SQL_HPP

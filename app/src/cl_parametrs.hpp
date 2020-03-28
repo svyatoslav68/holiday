@@ -19,10 +19,12 @@ public:
 	clParametrs();
 	clParametrs(int argc, char *argv[]);
 	void setArgs(int argc, char *argv[]);
-	void loadFromFile(char *_nameFile);
+	void loadFromFile();
+	void saveSettings();
 	void setIdUnit(int _idUnit) {idUnit = _idUnit;}
 	int getIdUnit() {return idUnit;}
 	int getYear() {return workYear;}
+	std::string getNameConfFile() {return conf_file;}
 	void setYear(int _workYear) {workYear = _workYear;}
 	bool isHelp();
 	bool isVersion();
@@ -30,7 +32,7 @@ public:
 	MYSQL *getDescriptorBD();
 private:
 	MYSQL descriptorBD;		// Дескриптор базы данных
-	std::string nameFile;
+	//std::string nameFile;
 	po::options_description ops_desc; // Options description (Описание опций)
 	po::positional_options_description pos_desc; // Positional options description
 	po::variables_map op_store;		// Container for store received options
@@ -39,5 +41,7 @@ private:
 	***********************************************************/
 	int idUnit; // Идентификатор подразделения
 	int workYear; // Год, с которым будет работать программа
+	std::string conf_file; // Имя файла, где хранятся настройки программы
+	bool year_from_cl; // True, если workYear установлен явно из командной строки
 };
 #endif //CL_PARAMETRS_HPP

@@ -8,14 +8,15 @@
 #include "listUnits.hpp"
 
 //const char *SQL = "SELECT GET_FULL_NAME_UNIT_LEVEL(idUNit, 2, 'i'), GET_FULL_NAME_UNIT_LEVEL(idUNit, -1, 'i')";
-const std::string TUnit::templateSQL = StrFromFile("SQL.txt", ":").getString("TUnit");
+//const std::string TUnit::templateSQL = ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "ListUnits", "TUnit");
+//const std::string TUnit::templateSQL = StrFromFile("SQL.txt", ":").getString("TUnit");
 
-TUnit::TUnit(){
+TUnit::TUnit():templateSQL(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "ListUnits", "TUnit")){
 	data_from_BD = nullptr;
 	//file_strings = StrFromFile("SQL.txt", ":");
 }
 
-TUnit::TUnit(int _unitId){
+TUnit::TUnit(int _unitId):templateSQL(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "ListUnits", "TUnit")){
 	data_from_BD = nullptr;
 	unitId = _unitId;
 	boost::format fmter(templateSQL);

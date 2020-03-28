@@ -35,9 +35,11 @@ private:
 class ValuesFromXML {
 public:
 	ValuesFromXML(const char *_name_file);
-	std::string getStrValue(const char *section, const char *key);
+	std::string getStrSQL(const char *part, const char *section, const char *key);
+	std::string getStrValue(const char *key);
 	int getIntValue(const char *key);
-	void save_settings();
+	void putIntValue(const char *key, const int value);
+	void saveSettings(const char *place);
 	void print_settings();
 private:
 	ValuesFromXML();

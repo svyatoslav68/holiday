@@ -5,6 +5,7 @@
 **********************************************************************/
 
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <cstring>
 #include <boost/foreach.hpp>
@@ -13,6 +14,8 @@
 #include "str_from_file.hpp"
 
 using std::string;
+//using string::size_type;
+
 namespace pt = boost::property_tree;
 
 StrFromFile::StrFromFile(const char *_delimiter):delimiter(string(_delimiter)){
@@ -107,8 +110,8 @@ void ValuesFromXML::print_settings(){
 	}
 }
 
-string ValuesFromXML::getStrValue(const char *section, const char *key){
-	boost::property_tree::ptree tree_sql = tree.get_child("FILE.SQL");
+string ValuesFromXML::getStrSQL(const char *part, const char *section, const char *key){
+	boost::property_tree::ptree tree_sql = tree.get_child(part);
 	string result;
 	char str_argument[strlen(section)+strlen(key)+strlen("query")+2];
 	strcpy(str_argument, section);
@@ -118,19 +121,79 @@ string ValuesFromXML::getStrValue(const char *section, const char *key){
 	strcat(str_argument, "query");
 	//str_argument = new char(100);
 	result =  tree_sql.get<string>(str_argument);
+	const char * no_space = " \n\t";
+	string::size_type idx_first = result.find_first_not_of(no_space); // Первый не пробельный символ строки
+	string::size_type idx_last = result.find_last_not_of(no_space);
+	result = result.substr(idx_first, idx_last-idx_first+1);
 	//delete str_argument;
 	return result;
 }
 
+string ValuesFromXML::getStrValue(const char *key){
+	string result;
+	const auto it = settings_from_file.find(key);
+	if (it != settings_from_file.cend()){
+		result = it->second;
+		const char * no_space = " \n\t";
+		string::size_type idx_first = result.find_first_not_of(no_space); // Первый не пробельный символ строки
+		string::size_type idx_last = result.find_last_not_of(no_space);
+		result = result.substr(idx_first, idx_last-idx_first+1);
+		return result;
+	}
+	else {
+		std::cerr << "Не найден параметр " << key << std::endl;
+		return string("");	
+	}
+}
 int ValuesFromXML::getIntValue(const char *key){
 	const auto it = settings_from_file.find(key);
-	if (it != settings_from_file.cend())
-		return boost::lexical_cast<int>(it->second);
-	else
+	if (it != settings_from_file.cend()){
+		try{
+			string result = it->second;
+			const char * no_space = " \n\t";
+			string::size_type idx_first = result.find_first_not_of(no_space); // Первый не пробельный символ строки
+			string::size_type idx_last = result.find_last_not_of(no_space);
+			result = result.substr(idx_first, idx_last-idx_first+1);
+			return boost::lexical_cast<int>(result);
+		}
+		catch (...){
+			std::cerr << "Не могу преобразовать значения параметра \"" << it->first << "\"" << it->second << " в int\n";
+			std::cout << "Продолжить? (Y/n)\n";
+			char x;
+			std::cin >> x;
+			if (x == 'n')
+				exit(1);
+			else
+				return -1;
+		}
+	}
+	else {
+		std::cerr << "Не найден параметр " << key << std::endl;
 		return -1;	
+	}
 }
 
-void ValuesFromXML::save_settings(){
+void ValuesFromXML::putIntValue(const char *key, const int value){
+	auto it = settings_from_file.find(key);
+	std::ostringstream oss;
+	if (it != settings_from_file.end()){
+		oss << std::dec << value;
+		it->second = oss.str();
+	}
+	else
+		std::cerr << "Не найден параметр " << key << std::endl;
+}
 
+void ValuesFromXML::saveSettings(const char *place){
+	std::cout << "Состояние settings_from_file перед сохранением:\n";
+	BOOST_FOREACH(auto set, settings_from_file){
+		std::cout << set.first << " = " << set.second << std::endl;
+		char key[strlen(place)+strlen(set.first.c_str())+2];
+		strcpy(key, place);
+		strcat(key, ".");
+		strcat(key, set.first.c_str());
+		tree.put(key, set.second);
+	}
+	pt::write_xml(name_file, tree);
 }
 

@@ -8,13 +8,14 @@
 #include "tholiday.hpp"
 #include "str_from_file.hpp"
 
-const std::string THoliday::templateSQLHoliday=StrFromFile("SQL.txt", ":").getString("getHoliday");
+//const std::string THoliday::templateSQLHoliday=StrFromFile("SQL.txt", ":").getString("getHoliday");
+//const std::string THoliday::templateSQLHoliday=ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "THoliday", "getHoliday");
 
-THoliday::THoliday(){
+THoliday::THoliday():templateSQLHoliday(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "THoliday", "getHoliday")){
 
 }
 
-THoliday::THoliday(int cod_holiday){
+THoliday::THoliday(int cod_holiday):templateSQLHoliday(ValuesFromXML(appParametrs.getNameConfFile().c_str()).getStrSQL("FILE.SQL", "THoliday", "getHoliday")){
 	data_from_BD = nullptr;
 	boost::format fmter(templateSQLHoliday);
 	std::stringstream ss;

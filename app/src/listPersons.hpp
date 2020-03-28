@@ -2,26 +2,25 @@
 #define LISTPERSONS_HPP
 #include "cl_parametrs.hpp"
 
-using std::string; 
-
 extern clParametrs appParametrs;
 
 class TPerson {
-private:
-	int dataId;		// Идентификатор записи о сотруднике в БД
-	string family;
-	string name;
-	string parent;
-	MYSQL_RES *data_from_BD;
+
 public:
-	static const string templateCardPersonSQL;
 	TPerson();
 	TPerson(const TPerson &p);
 	TPerson(int id);
-	TPerson(int id, string _family, string _name, string _parent);
+	TPerson(int id, std::string _family, std::string _name, std::string _parent);
 	int getId() const {return dataId;}
 	void displayCard();
-	string getFamilyIO() const;
+	std::string getFamilyIO() const;
+private:
+	const std::string templateCardPersonSQL;
+	MYSQL_RES *data_from_BD;
+	int dataId;		// Идентификатор записи о сотруднике в БД
+	std::string family;
+	std::string name;
+	std::string parent;
 };
 
 class ListPersons {

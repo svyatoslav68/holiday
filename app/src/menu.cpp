@@ -315,6 +315,8 @@ void SettingsMenu::mainLoop(){
 	static const string menu = "Select unit, Select year, Save, Quit";
 	static const string choices  = "UYSQ";
 	clearScreen();
+	std::cout << "План отпусков на " << appParametrs.getYear() << " год.\n";
+	std::cout << "Подразделение: " << TUnit(appParametrs.getIdUnit()).getFullName() << std::endl;
 	uint8_t result = getMenuSelection(menu, choices);
 	switch (result){
 		case 'U':selectUnit();		break;
@@ -341,7 +343,7 @@ void SettingsMenu::selectYear(){
 }
 
 void SettingsMenu::saveSettings(){
-
+	appParametrs.saveSettings();
 }
 
 void SettingsMenu::quit(){
