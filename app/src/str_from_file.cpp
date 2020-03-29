@@ -160,7 +160,7 @@ int ValuesFromXML::getIntValue(const char *key){
 			std::cerr << "Не могу преобразовать значения параметра \"" << it->first << "\"" << it->second << " в int\n";
 			std::cout << "Продолжить? (Y/n)\n";
 			char x;
-			std::cin >> x;
+			std::cin.get(x);
 			if (x == 'n')
 				exit(1);
 			else
